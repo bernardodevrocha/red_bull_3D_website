@@ -1,23 +1,73 @@
+---
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = 'Monster — Cheeky Lime',
+	description =
+		'Discover a world of vibrant flavors with our premium selection of energy drinks.',
+} = Astro.props;
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<meta name="description" content={description} />
+		<title>{title}</title>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&family=Quicksand:wght@300;400;500;600;700&display=swap"
+		/>
 	</head>
 	<body>
 		<slot />
 	</body>
 </html>
 
-<style>
+<style is:global>
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
 	html,
 	body {
 		margin: 0;
+		padding: 0;
 		width: 100%;
-		height: 100%;
+		min-height: 100%;
+	}
+
+	body {
+		/* Scale unit: the reference composition is 1024 x 576. Every measurement
+		   in the design spec is expressed in those units and multiplied by --u. */
+		--u: clamp(0.8px, min(100vw / 1024, 100vh / 576), 2.6px);
+		--uw: calc(100vw / 1024);
+
+		--pill: 999px;
+		--transition: 260ms ease;
+
+		font-family: Quicksand, Poppins, 'Helvetica Neue', Arial, sans-serif;
+		color: #fff;
+		background: #b1d861;
+		overflow-x: hidden;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	:focus-visible {
+		outline: 2px solid #fff;
+		outline-offset: 3px;
+		border-radius: 4px;
 	}
 </style>

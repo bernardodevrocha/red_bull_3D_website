@@ -1,0 +1,559 @@
+{
+"ui_type": "Premium beverage product landing page / hero section",
+"reference_image": {
+"file": "/mnt/data/monsterDesign-1024.jpg",
+"dimensions": {
+"width": 1024,
+"height": 576,
+"aspect_ratio": "16:9"
+}
+},
+"overall_design": {
+"description": "A modern, high-impact landing page for an energy drink brand. The composition is centered around a large product can, with oversized typography in the background, a vivid lime-green gradient background, minimal navigation, product information, size selectors, and subtle navigation controls.",
+"visual_style": [
+"premium",
+"minimalist",
+"modern",
+"high-contrast",
+"editorial",
+"product-focused",
+"bold typography",
+"sports/energy drink aesthetic"
+],
+"primary_goal": "Immediately draw attention to the beverage can while communicating the product category, flavor, brand identity, and available sizes.",
+"composition_principle": "The product can is the dominant foreground element. Oversized MONSTER typography sits behind it and creates depth. Supporting content is positioned in the lower-left area, while controls occupy the top navigation and right/lower portions."
+},
+"color_palette": {
+"background": {
+"type": "linear_gradient",
+"description": "Bright lime/yellow-green gradient covering the entire viewport.",
+"approximate_colors": [
+"#A9D45B",
+"#B7DD68",
+"#C5E56E"
+],
+"direction": "approximately left-to-right with subtle variation",
+"visual_effect": "Fresh, energetic and strongly associated with lime flavor and the green Monster visual identity."
+},
+"primary_text": {
+"dark": "#000000",
+"usage": "Large MONSTER background lettering and some dark UI elements."
+},
+"light_text": {
+"color": "#FFFFFF",
+"usage": "Navigation, supporting copy, flavor title, buttons, controls and the light portion of the oversized logo typography."
+},
+"accent": {
+"color": "#A9D45B",
+"usage": "Green brand elements and visual integration with the can."
+},
+"notification_red": {
+"color": "#FF1D32",
+"usage": "Small notification badge on the shopping/bag icon."
+},
+"secondary_gray": {
+"color": "rgba(255,255,255,0.45)",
+"usage": "Subtle secondary UI elements and low-emphasis text."
+}
+},
+"layout": {
+"viewport": {
+"width": "100%",
+"height": "100vh",
+"reference_height": "576px"
+},
+"horizontal_padding": {
+"desktop": "approximately 44px",
+"left_content_alignment": "approximately 4.3% of viewport width",
+"right_content_alignment": "approximately 4.5% of viewport width"
+},
+"vertical_structure": {
+"header": "top approximately 10% of viewport",
+"hero": "middle approximately 70% of viewport",
+"bottom_controls": "bottom approximately 7-12% of viewport"
+},
+"z_index_layers": [
+{
+"layer": 1,
+"element": "background gradient",
+"depth": "furthest back"
+},
+{
+"layer": 2,
+"element": "oversized MONSTER typography",
+"depth": "background"
+},
+{
+"layer": 3,
+"element": "product can",
+"depth": "foreground"
+},
+{
+"layer": 4,
+"element": "navigation and UI controls",
+"depth": "topmost"
+}
+]
+},
+"header": {
+"position": {
+"top": "approximately 24px",
+"left": "approximately 45px",
+"right": "approximately 45px"
+},
+"height": "approximately 25px",
+"display": "flex",
+"align_items": "center",
+"justify_content": "space-between",
+"brand": {
+"text": "Monster",
+"position": "far left",
+"font_color": "#FFFFFF",
+"font_size": "approximately 17px",
+"font_weight": "600-700",
+"style": "clean sans-serif",
+"letter_spacing": "slightly negative or normal",
+"description": "Simple white wordmark without additional graphical treatment."
+},
+"navigation": {
+"position": "centered horizontally",
+"items": [
+{
+"label": "Flavour",
+"approximate_position": "x=337px"
+},
+{
+"label": "Drinks",
+"approximate_position": "x=422px"
+},
+{
+"label": "Fruit",
+"approximate_position": "x=503px"
+},
+{
+"label": "About",
+"approximate_position": "x=578px"
+},
+{
+"label": "Contact",
+"approximate_position": "x=656px"
+}
+],
+"font_size": "approximately 8px",
+"font_weight": "400",
+"color": "rgba(255,255,255,0.9)",
+"spacing": "approximately 35-45px between navigation items",
+"style": "minimal uppercase/lowercase mixed sans-serif navigation"
+},
+"actions": {
+"position": "top right",
+"items": [
+{
+"type": "account",
+"icon": "thin outlined user/profile icon",
+"size": "approximately 16x16px",
+"color": "#FFFFFF"
+},
+{
+"type": "shopping_bag",
+"icon": "thin outlined shopping bag icon",
+"size": "approximately 16x16px",
+"color": "#FFFFFF",
+"notification": {
+"visible": true,
+"count": "2",
+"shape": "small circular badge",
+"color": "#FF1D32",
+"text_color": "#FFFFFF",
+"font_size": "approximately 8px",
+"position": "top-right corner of bag icon"
+}
+}
+],
+"gap": "approximately 20px"
+}
+},
+"background_typography": {
+"text": "MONSTER",
+"purpose": "Large decorative brand typography behind the product.",
+"position": {
+"top": "approximately 174px",
+"left": "approximately 42px",
+"width": "approximately 904px",
+"height": "approximately 139px"
+},
+"font": {
+"family_style": "very heavy geometric/display sans-serif",
+"weight": "900",
+"size": "approximately 184-190px",
+"line_height": "approximately 0.8-0.9",
+"letter_spacing": "very tight",
+"case": "uppercase"
+},
+"visual_treatment": {
+"description": "The word MONSTER spans almost the entire horizontal viewport and is partially hidden by the product can.",
+"coloring": {
+"left_section": "black to very dark green",
+"right_section": "white/off-white"
+},
+"masking": "The can visually occludes the middle of the word, creating a layered 3D composition.",
+"opacity": "approximately 100%",
+"blend_effect": "Dark letters integrate strongly with the background while the right letters contrast against the green."
+},
+"implementation_hint": "Render the typography as an absolutely positioned oversized heading behind the product. Use a horizontal gradient or separate spans to transition from black/dark green on the left to off-white on the right."
+},
+"hero_product": {
+"type": "energy_drink_can",
+"position": {
+"center_x": "approximately 511px",
+"top": "approximately 84px",
+"bottom": "approximately 493px",
+"width": "approximately 162px",
+"height": "approximately 410px"
+},
+"dominance": "Primary visual focal point.",
+"orientation": "Front-facing vertical can with a very slight realistic perspective/curvature.",
+"appearance": {
+"can_body": "black",
+"top": "dark metallic green/black aluminum",
+"bottom": "dark metallic base",
+"branding": "large green Monster claw logo",
+"secondary_branding": "white Monster Energy typography",
+"flavor_label": "green ZERO SUGAR band near lower section",
+"top_text": "ZERO SUGAR",
+"lighting": "Realistic product photography with subtle highlights and reflections along the aluminum edges."
+},
+"visual_effects": [
+"realistic metallic reflections",
+"soft shadowing",
+"subtle edge highlights",
+"high contrast against green background",
+"natural product photography"
+],
+"layering": {
+"above_background_text": true,
+"above_background": true,
+"below_navigation": false
+},
+"recommended_implementation": "Use a transparent-background product image or isolated PNG/WebP positioned absolutely over the background typography. Avoid generating the can using CSS."
+},
+"left_content": {
+"position": {
+"left": "approximately 44px",
+"top": "approximately 386px",
+"width": "approximately 260px"
+},
+"title": {
+"text": "Cheeky lime",
+"font_style": "rounded futuristic/light sans-serif",
+"font_size": "approximately 26px",
+"font_weight": "300-400",
+"color": "#FFFFFF",
+"line_height": "approximately 1.1",
+"margin_bottom": "approximately 12px"
+},
+"description": {
+"text": "Discover a world of vibrant flavors with our premium juice selection. At fresh & juicy, we believe in the power of nature's finest ingredients to bring you",
+"font_size": "approximately 9px",
+"line_height": "approximately 1.45",
+"font_weight": "400",
+"color": "rgba(255,255,255,0.72)",
+"width": "approximately 250px",
+"style": "small editorial supporting copy"
+},
+"cta": {
+"text": "See More",
+"position": "below description",
+"margin_top": "approximately 18px",
+"width": "approximately 75px",
+"height": "approximately 27px",
+"border_radius": "approximately 16px",
+"background": "#FFFFFF",
+"text_color": "#4D5A3A",
+"font_size": "approximately 9px",
+"font_weight": "500",
+"border": "none",
+"shadow": "none or extremely subtle",
+"interaction": {
+"hover": "slightly darken background or increase shadow",
+"cursor": "pointer"
+}
+}
+},
+"right_size_selector": {
+"position": {
+"right": "approximately 38px",
+"top": "approximately 177px"
+},
+"layout": "vertical stack",
+"items": [
+{
+"label": "500 ML",
+"shape": "circle",
+"diameter": "approximately 40px",
+"background": "#FFFFFF",
+"text_color": "#59634B",
+"font_size": "approximately 9px",
+"font_weight": "600",
+"state": "active"
+},
+{
+"label": "100 ML",
+"shape": "circle",
+"diameter": "approximately 40px",
+"background": "rgba(75,85,55,0.35)",
+"text_color": "#FFFFFF",
+"font_size": "approximately 9px",
+"font_weight": "500",
+"state": "inactive"
+},
+{
+"label": "125 ML",
+"shape": "circle",
+"diameter": "approximately 40px",
+"background": "rgba(75,85,55,0.35)",
+"text_color": "#FFFFFF",
+"font_size": "approximately 9px",
+"font_weight": "500",
+"state": "inactive"
+}
+],
+"spacing": "approximately 8-10px vertical gap",
+"interaction": {
+"active_state": "white filled circle with dark text",
+"inactive_state": "semi-transparent dark-green circle with white text",
+"hover": "transition toward white background"
+}
+},
+"bottom_center_navigation": {
+"position": {
+"bottom": "approximately 23px",
+"center_x": "approximately 512px"
+},
+"controls": [
+{
+"type": "previous",
+"shape": "circle",
+"diameter": "approximately 30px",
+"border": "1px solid rgba(255,255,255,0.6)",
+"background": "transparent",
+"icon": "thin left chevron",
+"icon_color": "#FFFFFF"
+},
+{
+"type": "next",
+"shape": "circle",
+"diameter": "approximately 30px",
+"border": "1px solid rgba(255,255,255,0.6)",
+"background": "transparent",
+"icon": "thin right chevron",
+"icon_color": "#FFFFFF"
+}
+],
+"gap": "approximately 8px",
+"purpose": "Carousel/hero slide navigation."
+},
+"scroll_control": {
+"position": {
+"right": "approximately 27px",
+"bottom": "approximately 11px"
+},
+"shape": "large circular outline",
+"diameter": "approximately 58px",
+"border": "1px solid rgba(255,255,255,0.7)",
+"background": "transparent",
+"content": {
+"text_line_1": "Scroll",
+"text_line_2": "Down",
+"font_size": "approximately 10px",
+"font_weight": "400",
+"color": "#FFFFFF",
+"alignment": "center"
+},
+"purpose": "Indicates that the page continues vertically and encourages scrolling.",
+"interaction": {
+"hover": "increase border opacity and slightly scale the circle",
+"click": "smooth-scroll to next section"
+}
+},
+"spacing_system": {
+"general": "Generous whitespace with strong separation between navigation, hero content and controls.",
+"header_to_hero": "approximately 50-100px",
+"hero_title_to_description": "approximately 15px",
+"description_to_cta": "approximately 15-20px",
+"size_selector_spacing": "approximately 8px",
+"bottom_controls": "kept close to bottom edge while maintaining safe margin"
+},
+"typography": {
+"recommended_families": [
+"Montserrat",
+"Inter",
+"Poppins",
+"Helvetica Neue",
+"Arial"
+],
+"display_font_characteristics": "Extremely bold, geometric, compact and wide.",
+"body_font_characteristics": "Small, clean, modern sans-serif.",
+"title_font_characteristics": "Light rounded/geometric sans-serif with a futuristic beverage-brand feel."
+},
+"responsive_behavior": {
+"desktop": {
+"description": "Maintain the current composition with the product centered and large typography extending behind it."
+},
+"tablet": {
+"recommended_changes": [
+"Reduce oversized MONSTER typography by approximately 20-30%.",
+"Reduce product can width proportionally.",
+"Move size selector slightly inward.",
+"Reduce horizontal padding."
+]
+},
+"mobile": {
+"recommended_changes": [
+"Collapse navigation into a hamburger menu.",
+"Move account and shopping icons to the right side.",
+"Scale the product can to approximately 45-55% of viewport width.",
+"Move product lower or center vertically.",
+"Reduce the background MONSTER typography significantly or crop it intentionally.",
+"Move the flavor description below the product.",
+"Move size selector closer to the product.",
+"Keep carousel controls visible near the bottom.",
+"Reduce or hide the Scroll Down indicator if vertical space is limited."
+]
+}
+},
+"interaction_model": {
+"navigation": {
+"Flavour": "Navigate to flavor/product section.",
+"Drinks": "Navigate to drinks/product catalog.",
+"Fruit": "Navigate to fruit/flavor category.",
+"About": "Navigate to brand information.",
+"Contact": "Navigate to contact section."
+},
+"product": {
+"behavior": "Hero product can change based on carousel navigation or selected flavor/size."
+},
+"size_selector": {
+"behavior": "Selecting a size changes active visual state and potentially updates the displayed product or product metadata."
+},
+"carousel": {
+"previous": "Show previous beverage/flavor.",
+"next": "Show next beverage/flavor."
+},
+"scroll": {
+"behavior": "Smooth-scroll to the next page section."
+},
+"shopping_bag": {
+"behavior": "Open shopping/cart interface.",
+"badge": "Displays current cart item count."
+},
+"account": {
+"behavior": "Open account/login interface."
+}
+},
+"visual_hierarchy": [
+{
+"priority": 1,
+"element": "Product can",
+"reason": "Largest foreground object and primary conversion/product recognition element."
+},
+{
+"priority": 2,
+"element": "MONSTER background typography",
+"reason": "Strong brand recognition and visual framing."
+},
+{
+"priority": 3,
+"element": "Cheeky lime title",
+"reason": "Communicates the specific product/flavor."
+},
+{
+"priority": 4,
+"element": "Navigation",
+"reason": "Provides site-level navigation without competing with the hero."
+},
+{
+"priority": 5,
+"element": "CTA",
+"reason": "Primary supporting action."
+},
+{
+"priority": 6,
+"element": "Size selector",
+"reason": "Secondary product interaction."
+},
+{
+"priority": 7,
+"element": "Carousel and scroll controls",
+"reason": "Navigation affordances with intentionally low visual weight."
+}
+],
+"implementation_structure": {
+"recommended_html": {
+"root": "main.hero-page",
+"children": [
+"header.site-header",
+"div.hero-background",
+"h1.background-brand-title",
+"div.product-stage",
+"section.product-information",
+"div.size-selector",
+"div.carousel-controls",
+"button.scroll-down"
+]
+},
+"recommended_css": {
+"root": "position: relative; width: 100%; min-height: 100vh; overflow: hidden;",
+"background": "absolute inset: 0;",
+"brand_title": "position: absolute; z-index: 1;",
+"product": "position: absolute; z-index: 2;",
+"header": "position: relative; z-index: 10;",
+"interactive_controls": "position: absolute; z-index: 10;"
+},
+"important": [
+"Use absolute positioning for the hero composition on desktop.",
+"Use CSS transitions for interactive controls.",
+"Preserve the product's visual dominance.",
+"Avoid excessive shadows or decorative elements.",
+"Maintain the strong lime-green color field.",
+"Use overflow:hidden to prevent oversized typography from creating horizontal scrolling."
+]
+},
+"design_tokens": {
+"border_radius": {
+"pill": "999px",
+"circle": "50%"
+},
+"transition": "200-300ms ease",
+"desktop_padding": "44px",
+"small_text": "8-10px",
+"body_text": "9-12px",
+"section_title": "24-28px",
+"hero_display": "180-200px",
+"control_border": "1px solid rgba(255,255,255,0.5)"
+},
+"accessibility": {
+"requirements": [
+"All icons should have accessible labels.",
+"Size selector buttons should expose their current selected state.",
+"Carousel controls should have aria-label values such as Previous product and Next product.",
+"Scroll Down control should be keyboard accessible.",
+"Navigation links should have sufficient focus states.",
+"Text should remain readable against the lime background.",
+"Do not rely exclusively on color to communicate the active size."
+]
+},
+"reconstruction_priority": [
+"1. Recreate the lime gradient background.",
+"2. Add oversized MONSTER typography behind the hero.",
+"3. Place the product can precisely in the center foreground.",
+"4. Recreate the header and navigation.",
+"5. Add the lower-left Cheeky lime content.",
+"6. Add the right-side size selector.",
+"7. Add bottom carousel controls.",
+"8. Add the bottom-right Scroll Down control.",
+"9. Add responsive behavior.",
+"10. Add hover, focus, carousel and selection interactions."
+],
+"llm_instruction": "When reconstructing this UI, prioritize visual similarity over generic landing-page conventions. The central product can must remain the dominant focal point, the oversized MONSTER word must sit behind it, and the lime-green background must occupy the entire viewport. Keep the interface intentionally sparse, with small navigation typography and subtle controls. Do not add sections, cards, shadows, gradients, decorative illustrations or UI components that are not represented in the reference."
+}

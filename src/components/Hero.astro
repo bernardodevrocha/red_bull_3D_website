@@ -1,0 +1,832 @@
+---
+import canModel from '../assets/3D/can.glb?url';
+
+const navigation = [
+	{ label: 'Flavour', href: '#flavour' },
+	{ label: 'Drinks', href: '#drinks' },
+	{ label: 'Fruit', href: '#fruit' },
+	{ label: 'About', href: '#about' },
+	{ label: 'Contact', href: '#contact' },
+];
+
+const sizes = ['500 ML', '100 ML', '125 ML'];
+
+const flavours = [
+	{
+		id: 'lime',
+		name: 'Cheeky lime',
+		description:
+			"Discover a world of vibrant flavors with our premium juice selection. At fresh & juicy, we believe in the power of nature's finest ingredients to bring you",
+		background: 'linear-gradient(100deg, #A9D45B 0%, #B7DD68 52%, #C5E56E 100%)',
+		accent: '#B8E63C',
+		accentDeep: '#5E9612',
+		band: 'ZERO SUGAR',
+		lid: '#A8C94A',
+		cta: '#4D5A3A',
+	},
+	{
+		id: 'kiwi',
+		name: 'Zesty kiwi',
+		description:
+			'A sharp, green-fruit hit built on cold-pressed kiwi and a long citrus finish. Same zero sugar formula, same charge, an entirely different edge.',
+		background: 'linear-gradient(100deg, #8FCB5A 0%, #A3D461 52%, #B6DE6D 100%)',
+		accent: '#7BD44A',
+		accentDeep: '#2F7A2A',
+		band: 'ZERO SUGAR',
+		lid: '#86BE45',
+		cta: '#3E5232',
+	},
+	{
+		id: 'citrus',
+		name: 'Golden citrus',
+		description:
+			'Sun-ripened yellow citrus pressed into a bright, clean charge. Bold up front, dry on the finish, and still nothing but zero sugar underneath.',
+		background: 'linear-gradient(100deg, #C3D95A 0%, #D2E268 52%, #DDE97C 100%)',
+		accent: '#E9DC3B',
+		accentDeep: '#A07A0B',
+		band: 'ZERO SUGAR',
+		lid: '#D6CF4E',
+		cta: '#5A5730',
+	},
+];
+
+const first = flavours[0];
+---
+
+<main class="hero" id="hero" style={`--bg:${first.background}; --cta-ink:${first.cta}`}>
+	<div class="hero__bg" aria-hidden="true"></div>
+
+	<header class="site-header">
+		<a class="brand" href="/">Monster</a>
+
+		<nav class="site-nav" id="site-nav" aria-label="Main">
+			<ul>
+				{navigation.map((item) => (
+					<li><a href={item.href}>{item.label}</a></li>
+				))}
+			</ul>
+		</nav>
+
+		<div class="header-actions">
+			<a class="icon-button" href="#account" aria-label="Open account">
+				<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+					<circle cx="12" cy="12" r="9.2" stroke="currentColor" stroke-width="1.3" />
+					<circle cx="12" cy="9.6" r="3.1" stroke="currentColor" stroke-width="1.3" />
+					<path
+						d="M5.9 19.4a6.6 6.6 0 0 1 12.2 0"
+						stroke="currentColor"
+						stroke-width="1.3"
+						stroke-linecap="round"
+					/>
+				</svg>
+			</a>
+
+			<a class="icon-button icon-button--bag" href="#cart" aria-label="Open cart, 2 items">
+				<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+					<path
+						d="M4.6 7.6h14.8l-1.1 12a1.6 1.6 0 0 1-1.6 1.4H7.3a1.6 1.6 0 0 1-1.6-1.4l-1.1-12Z"
+						stroke="currentColor"
+						stroke-width="1.3"
+						stroke-linejoin="round"
+					/>
+					<path
+						d="M8.9 9.7V6.5a3.1 3.1 0 0 1 6.2 0v3.2"
+						stroke="currentColor"
+						stroke-width="1.3"
+						stroke-linecap="round"
+					/>
+				</svg>
+				<span class="badge" aria-hidden="true">2</span>
+			</a>
+
+			<button
+				class="menu-toggle"
+				type="button"
+				aria-label="Open menu"
+				aria-expanded="false"
+				aria-controls="site-nav"
+			>
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+			</button>
+		</div>
+	</header>
+
+	<h1 class="brand-title" aria-hidden="true">MONSTER</h1>
+	<span class="sr-only">Monster — Cheeky lime</span>
+
+	<div class="stage">
+		<div class="stage__shadow" aria-hidden="true"></div>
+		<canvas
+			class="stage__canvas"
+			id="can-canvas"
+			data-model={canModel}
+			aria-label="Interactive 3D Monster can. Drag to rotate."
+			role="img"></canvas>
+	</div>
+
+	<section class="product-info" aria-labelledby="flavour-name">
+		<h2 class="product-info__title" id="flavour-name" data-field="name">{first.name}</h2>
+		<p class="product-info__text" data-field="description">{first.description}</p>
+		<a class="cta" href="#flavour">See More</a>
+	</section>
+
+	<div class="sizes" role="group" aria-label="Choose a size">
+		{sizes.map((size, index) => (
+			<button
+				class="sizes__item"
+				type="button"
+				data-size={size}
+				aria-pressed={index === 0 ? 'true' : 'false'}
+			>
+				{size.split(' ')[0]}<br />{size.split(' ')[1]}
+			</button>
+		))}
+	</div>
+
+	<div class="carousel">
+		<button class="carousel__button" type="button" data-slide="-1" aria-label="Previous product">
+			<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+				<path
+					d="M14.2 5.6 8 12l6.2 6.4"
+					stroke="currentColor"
+					stroke-width="1.4"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				/>
+			</svg>
+		</button>
+		<button class="carousel__button" type="button" data-slide="1" aria-label="Next product">
+			<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+				<path
+					d="M9.8 5.6 16 12l-6.2 6.4"
+					stroke="currentColor"
+					stroke-width="1.4"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				/>
+			</svg>
+		</button>
+	</div>
+
+	<button class="scroll-down" type="button">Scroll<br />Down</button>
+
+	<script type="application/json" id="flavour-data" set:html={JSON.stringify(flavours)}></script>
+</main>
+
+<style>
+	.hero {
+		position: relative;
+		width: 100%;
+		height: 100svh;
+		min-height: calc(420 * var(--u));
+		overflow: hidden;
+		isolation: isolate;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		clip-path: inset(50%);
+		overflow: hidden;
+	}
+
+	/* 1 — lime gradient field ------------------------------------------------ */
+
+	.hero__bg {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		background: var(--bg);
+		transition: background 600ms ease;
+	}
+
+	.hero__bg::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(
+			120% 90% at 42% 42%,
+			rgba(255, 255, 255, 0.2) 0%,
+			rgba(255, 255, 255, 0) 62%
+		);
+	}
+
+	/* 2 — oversized brand typography ---------------------------------------- */
+
+	.brand-title {
+		position: absolute;
+		z-index: 1;
+		left: calc(42 * var(--uw));
+		right: calc(78 * var(--uw));
+		top: 50%;
+		margin: 0;
+		transform: translateY(-50%) translateY(calc(-45 * var(--u)));
+		font-family: Poppins, 'Helvetica Neue', Arial, sans-serif;
+		font-weight: 900;
+		font-size: 17.6vw;
+		line-height: 0.82;
+		letter-spacing: -0.015em;
+		text-align: center;
+		white-space: nowrap;
+		background: linear-gradient(
+			90deg,
+			#000000 0%,
+			#04060a 24%,
+			#33421c 42%,
+			#9cb47a 50%,
+			#eef3e3 58%,
+			#fdfef9 76%,
+			#ffffff 100%
+		);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+		user-select: none;
+	}
+
+	/* 3 — product stage ------------------------------------------------------ */
+
+	.stage {
+		position: absolute;
+		z-index: 2;
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		width: calc(430 * var(--u));
+		height: 100%;
+		pointer-events: none;
+	}
+
+	.stage__canvas {
+		--can-fill: 0.712;
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: auto;
+		opacity: 0;
+		transition: opacity 700ms ease;
+		touch-action: pan-y;
+	}
+
+	.stage__canvas[data-ready='true'] {
+		opacity: 1;
+	}
+
+	.stage__shadow {
+		position: absolute;
+		left: 50%;
+		top: 86.5%;
+		width: calc(190 * var(--u));
+		height: calc(22 * var(--u));
+		transform: translate(-50%, -50%);
+		border-radius: 50%;
+		background: radial-gradient(
+			closest-side,
+			rgba(38, 55, 12, 0.34) 0%,
+			rgba(38, 55, 12, 0.12) 55%,
+			rgba(38, 55, 12, 0) 100%
+		);
+		filter: blur(calc(3 * var(--u)));
+	}
+
+	/* 4 — header ------------------------------------------------------------- */
+
+	.site-header {
+		position: absolute;
+		z-index: 10;
+		top: calc(24 * var(--u));
+		left: calc(45 * var(--u));
+		right: calc(45 * var(--u));
+		height: calc(25 * var(--u));
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.brand {
+		font-size: calc(16 * var(--u));
+		font-weight: 600;
+		letter-spacing: -0.01em;
+		color: #fff;
+		text-decoration: none;
+	}
+
+	.site-nav {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.site-nav ul {
+		display: flex;
+		align-items: center;
+		gap: calc(42 * var(--u));
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.site-nav a {
+		font-size: calc(8.6 * var(--u));
+		font-weight: 500;
+		color: rgba(255, 255, 255, 0.9);
+		text-decoration: none;
+		transition: color var(--transition);
+	}
+
+	.site-nav a:hover {
+		color: #fff;
+	}
+
+	.header-actions {
+		display: flex;
+		align-items: center;
+		gap: calc(20 * var(--u));
+	}
+
+	.icon-button {
+		position: relative;
+		display: grid;
+		place-items: center;
+		width: calc(17 * var(--u));
+		height: calc(17 * var(--u));
+		color: #fff;
+		transition: opacity var(--transition);
+	}
+
+	.icon-button:hover {
+		opacity: 0.75;
+	}
+
+	.icon-button svg {
+		width: 100%;
+		height: 100%;
+	}
+
+	.badge {
+		position: absolute;
+		top: calc(-4 * var(--u));
+		right: calc(-4 * var(--u));
+		display: grid;
+		place-items: center;
+		min-width: calc(11 * var(--u));
+		height: calc(11 * var(--u));
+		padding: 0 calc(2 * var(--u));
+		border-radius: var(--pill);
+		background: #ff1d32;
+		color: #fff;
+		font-family: Poppins, sans-serif;
+		font-size: calc(6.6 * var(--u));
+		font-weight: 600;
+		line-height: 1;
+	}
+
+	.menu-toggle {
+		display: none;
+		flex-direction: column;
+		justify-content: center;
+		gap: calc(4 * var(--u));
+		width: calc(20 * var(--u));
+		height: calc(17 * var(--u));
+		padding: 0;
+		border: 0;
+		background: none;
+		cursor: pointer;
+	}
+
+	.menu-toggle span {
+		display: block;
+		height: 1.5px;
+		background: #fff;
+		border-radius: var(--pill);
+		transition: transform var(--transition), opacity var(--transition);
+	}
+
+	/* 5 — lower-left product copy -------------------------------------------- */
+
+	.product-info {
+		position: absolute;
+		z-index: 10;
+		left: calc(44 * var(--u));
+		top: 50%;
+		transform: translateY(calc(98 * var(--u)));
+		width: calc(266 * var(--u));
+	}
+
+	.product-info__title {
+		margin: 0 0 calc(12 * var(--u));
+		font-weight: 300;
+		font-size: calc(26 * var(--u));
+		line-height: 1.1;
+		color: #fff;
+	}
+
+	.product-info__text {
+		margin: 0;
+		width: calc(250 * var(--u));
+		font-size: calc(9 * var(--u));
+		font-weight: 400;
+		line-height: 1.45;
+		color: rgba(255, 255, 255, 0.72);
+	}
+
+	.cta {
+		display: grid;
+		place-items: center;
+		margin-top: calc(18 * var(--u));
+		width: calc(78 * var(--u));
+		height: calc(27 * var(--u));
+		border-radius: var(--pill);
+		background: #fff;
+		color: var(--cta-ink);
+		font-size: calc(9.5 * var(--u));
+		font-weight: 600;
+		text-decoration: none;
+		transition: transform var(--transition), background var(--transition);
+	}
+
+	.cta:hover {
+		background: #f1f6e6;
+		transform: translateY(calc(-1 * var(--u)));
+	}
+
+	/* 6 — size selector ------------------------------------------------------ */
+
+	.sizes {
+		position: absolute;
+		z-index: 10;
+		right: calc(38 * var(--u));
+		top: 50%;
+		transform: translateY(calc(-50% - 42 * var(--u)));
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: calc(9 * var(--u));
+	}
+
+	.sizes__item {
+		display: grid;
+		place-items: center;
+		width: calc(40 * var(--u));
+		height: calc(40 * var(--u));
+		padding: 0;
+		border: 0;
+		border-radius: 50%;
+		background: rgba(75, 85, 55, 0.35);
+		color: #fff;
+		font-family: inherit;
+		font-size: calc(9 * var(--u));
+		font-weight: 500;
+		line-height: 1.15;
+		text-align: center;
+		cursor: pointer;
+		transition: background var(--transition), color var(--transition),
+			width var(--transition), height var(--transition);
+	}
+
+	.sizes__item:hover {
+		background: rgba(255, 255, 255, 0.55);
+	}
+
+	.sizes__item[aria-pressed='true'] {
+		width: calc(46 * var(--u));
+		height: calc(46 * var(--u));
+		background: #fff;
+		color: #59634b;
+		font-weight: 600;
+	}
+
+	/* 7 — carousel controls -------------------------------------------------- */
+
+	.carousel {
+		position: absolute;
+		z-index: 10;
+		top: calc(50% + 235 * var(--u));
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		gap: calc(8 * var(--u));
+	}
+
+	.carousel__button {
+		display: grid;
+		place-items: center;
+		width: calc(30 * var(--u));
+		height: calc(30 * var(--u));
+		padding: 0;
+		border: 1px solid rgba(255, 255, 255, 0.6);
+		border-radius: 50%;
+		background: transparent;
+		color: #fff;
+		cursor: pointer;
+		transition: background var(--transition), border-color var(--transition);
+	}
+
+	.carousel__button svg {
+		width: calc(13 * var(--u));
+		height: calc(13 * var(--u));
+	}
+
+	.carousel__button:hover {
+		background: rgba(255, 255, 255, 0.16);
+		border-color: rgba(255, 255, 255, 0.9);
+	}
+
+	/* 8 — scroll hint -------------------------------------------------------- */
+
+	.scroll-down {
+		position: absolute;
+		z-index: 10;
+		right: calc(27 * var(--u));
+		top: calc(50% + 219 * var(--u));
+		display: grid;
+		place-items: center;
+		width: calc(58 * var(--u));
+		height: calc(58 * var(--u));
+		border: 1px solid rgba(255, 255, 255, 0.7);
+		border-radius: 50%;
+		background: transparent;
+		color: #fff;
+		font-family: inherit;
+		font-size: calc(10 * var(--u));
+		font-weight: 400;
+		line-height: 1.15;
+		text-align: center;
+		cursor: pointer;
+		transition: transform var(--transition), border-color var(--transition);
+	}
+
+	.scroll-down:hover {
+		border-color: #fff;
+		transform: scale(1.06);
+	}
+
+	/* 9 — responsive --------------------------------------------------------- */
+
+	@media (max-width: 1024px) {
+		.hero {
+			--u: clamp(1px, min(100vw / 760, 100vh / 620), 2.2px);
+		}
+
+		.brand-title {
+			font-size: 18.2vw;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.hero {
+			--u: clamp(1px, calc(100vw / 300), 1.9px);
+			height: auto;
+			min-height: 100svh;
+			display: grid;
+			grid-template-rows: auto 1fr auto auto;
+			padding-bottom: calc(24 * var(--u));
+		}
+
+		.site-header {
+			position: relative;
+			top: auto;
+			left: auto;
+			right: auto;
+			height: auto;
+			padding: calc(20 * var(--u));
+		}
+
+		.site-nav {
+			position: fixed;
+			inset: 0;
+			transform: none;
+			display: grid;
+			place-items: center;
+			background: rgba(24, 38, 6, 0.94);
+			opacity: 0;
+			visibility: hidden;
+			transition: opacity var(--transition), visibility var(--transition);
+		}
+
+		.site-nav[data-open='true'] {
+			opacity: 1;
+			visibility: visible;
+		}
+
+		.site-nav ul {
+			flex-direction: column;
+			gap: calc(22 * var(--u));
+		}
+
+		.site-nav a {
+			font-size: calc(18 * var(--u));
+		}
+
+		.menu-toggle {
+			display: flex;
+			position: relative;
+			z-index: 2;
+		}
+
+		.menu-toggle[aria-expanded='true'] span:first-child {
+			transform: translateY(calc(2.7 * var(--u))) rotate(45deg);
+		}
+
+		.menu-toggle[aria-expanded='true'] span:last-child {
+			transform: translateY(calc(-2.7 * var(--u))) rotate(-45deg);
+		}
+
+		.brand-title {
+			top: calc(150 * var(--u));
+			left: 50%;
+			right: auto;
+			width: 140vw;
+			transform: translateX(-50%);
+			font-size: 28vw;
+		}
+
+		.stage {
+			position: relative;
+			grid-row: 2;
+			left: auto;
+			transform: none;
+			width: 100%;
+			height: min(46vh, calc(300 * var(--u)));
+		}
+
+		.stage__canvas {
+			--can-fill: 0.94;
+		}
+
+		.stage__shadow {
+			top: 97%;
+			width: calc(150 * var(--u));
+		}
+
+		.product-info {
+			position: static;
+			grid-row: 3;
+			width: min(88vw, calc(300 * var(--u)));
+			margin: calc(16 * var(--u)) auto 0;
+			transform: none;
+			text-align: center;
+		}
+
+		.product-info__text {
+			width: 100%;
+		}
+
+		.cta {
+			margin-inline: auto;
+			width: calc(92 * var(--u));
+			height: calc(32 * var(--u));
+			font-size: calc(11 * var(--u));
+		}
+
+		.sizes {
+			position: absolute;
+			right: calc(14 * var(--u));
+			/* Roughly the vertical centre of the can on this layout. */
+			top: 32%;
+			transform: translateY(-50%);
+			gap: calc(8 * var(--u));
+		}
+
+		.carousel {
+			position: static;
+			grid-row: 4;
+			top: auto;
+			justify-content: center;
+			transform: none;
+			margin-top: calc(18 * var(--u));
+		}
+
+		.scroll-down {
+			display: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.cta:hover,
+		.scroll-down:hover {
+			transform: none;
+		}
+	}
+</style>
+
+<script>
+	import { createCanScene } from '../scripts/can-scene';
+
+	interface Flavour {
+		id: string;
+		name: string;
+		description: string;
+		background: string;
+		accent: string;
+		accentDeep: string;
+		band: string;
+		lid: string;
+		cta: string;
+	}
+
+	const hero = document.getElementById('hero') as HTMLElement;
+	const canvas = document.getElementById('can-canvas') as HTMLCanvasElement;
+	const flavours: Flavour[] = JSON.parse(
+		document.getElementById('flavour-data')!.textContent!,
+	);
+
+	let index = 0;
+
+	// --- 3D can -------------------------------------------------------------
+
+	const scenePromise = createCanScene(canvas, canvas.dataset.model!, {
+		style: {
+			accent: flavours[0].accent,
+			accentDeep: flavours[0].accentDeep,
+			band: flavours[0].band,
+		},
+		lidColor: flavours[0].lid,
+	}).catch((error) => {
+		console.error('Could not start the 3D stage', error);
+		return null;
+	});
+
+	// --- flavour carousel ---------------------------------------------------
+
+	function showFlavour(next: number) {
+		index = (next + flavours.length) % flavours.length;
+		const flavour = flavours[index];
+
+		hero.style.setProperty('--bg', flavour.background);
+		hero.style.setProperty('--cta-ink', flavour.cta);
+
+		for (const node of hero.querySelectorAll<HTMLElement>('[data-field]')) {
+			const key = node.dataset.field as 'name' | 'description';
+			node.animate(
+				[
+					{ opacity: 1, transform: 'translateY(0)' },
+					{ opacity: 0, transform: 'translateY(6px)' },
+					{ opacity: 0, transform: 'translateY(-6px)', offset: 0.5 },
+					{ opacity: 1, transform: 'translateY(0)' },
+				],
+				{ duration: 620, easing: 'ease' },
+			);
+			window.setTimeout(() => {
+				node.textContent = flavour[key];
+			}, 300);
+		}
+
+		scenePromise.then((scene) =>
+			scene?.setStyle(
+				{ accent: flavour.accent, accentDeep: flavour.accentDeep, band: flavour.band },
+				flavour.lid,
+			),
+		);
+	}
+
+	for (const button of hero.querySelectorAll<HTMLButtonElement>('[data-slide]')) {
+		button.addEventListener('click', () => {
+			showFlavour(index + Number(button.dataset.slide));
+		});
+	}
+
+	// --- size selector ------------------------------------------------------
+
+	const sizeButtons = [...hero.querySelectorAll<HTMLButtonElement>('.sizes__item')];
+
+	for (const button of sizeButtons) {
+		button.addEventListener('click', () => {
+			for (const other of sizeButtons) {
+				other.setAttribute('aria-pressed', String(other === button));
+			}
+		});
+	}
+
+	// --- mobile menu --------------------------------------------------------
+
+	const toggle = hero.querySelector<HTMLButtonElement>('.menu-toggle')!;
+	const nav = document.getElementById('site-nav')!;
+
+	toggle.addEventListener('click', () => {
+		const open = toggle.getAttribute('aria-expanded') === 'true';
+		toggle.setAttribute('aria-expanded', String(!open));
+		toggle.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
+		nav.dataset.open = String(!open);
+	});
+
+	nav.addEventListener('click', (event) => {
+		if ((event.target as HTMLElement).tagName !== 'A') return;
+		toggle.setAttribute('aria-expanded', 'false');
+		nav.dataset.open = 'false';
+	});
+
+	// --- scroll hint --------------------------------------------------------
+
+	hero.querySelector('.scroll-down')!.addEventListener('click', () => {
+		const target = document.getElementById('next');
+		if (target) {
+			target.scrollIntoView({ behavior: 'smooth' });
+			return;
+		}
+		window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+	});
+</script>
