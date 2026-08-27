@@ -1,0 +1,141 @@
+---
+const columns = [
+	{
+		title: 'Universo',
+		links: ['Bike', 'Skate', 'Surfe', 'Esporte a Motor', 'Gaming', 'Dança', 'Música'],
+	},
+	{
+		title: 'Red Bull',
+		links: ['Eventos', 'Atletas', 'Energy Drink', 'Editions', 'Red Bull TV'],
+	},
+	{
+		title: 'Institucional',
+		links: ['A empresa', 'Trabalhe conosco', 'Imprensa', 'Contato'],
+	},
+];
+---
+
+<footer class="footer" id="contato">
+	<div class="footer__wings" data-reveal>
+		<p class="footer__claim">Red Bull Te Dá Asas</p>
+	</div>
+
+	<div class="footer__grid">
+		{columns.map((column, index) => (
+			<nav class="col" data-reveal style={`--i:${index}`} aria-label={column.title}>
+				<h2 class="col__title">{column.title}</h2>
+				<ul>
+					{column.links.map((link) => (
+						<li><a href="#hero">{link}</a></li>
+					))}
+				</ul>
+			</nav>
+		))}
+	</div>
+
+	<div class="footer__base">
+		<p>
+			Recriação independente para estudo de front-end. Não é um site oficial da Red Bull
+			GmbH e não tem vínculo com a marca.
+		</p>
+		<p class="footer__top">
+			<a href="#hero">Voltar ao topo ↑</a>
+		</p>
+	</div>
+</footer>
+
+<style>
+	.footer {
+		padding: var(--section-y) 0 3rem;
+		background: rgba(243, 244, 247, 0.72);
+		border-top: 1px solid var(--ink-faint);
+	}
+
+	.footer__wings,
+	.footer__grid,
+	.footer__base {
+		width: var(--shell);
+		margin-inline: auto;
+	}
+
+	.footer__claim {
+		margin: 0;
+		font-family: Poppins, sans-serif;
+		font-size: clamp(2rem, 8.5vw, 7rem);
+		font-weight: 900;
+		line-height: 0.95;
+		letter-spacing: -0.04em;
+		text-align: center;
+		background: linear-gradient(
+			92deg,
+			var(--rb-navy) 0%,
+			var(--rb-red) 44%,
+			var(--rb-gold) 74%,
+			var(--rb-navy) 100%
+		);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+	}
+
+	.footer__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+		gap: clamp(2rem, 4vw, 3rem);
+		margin-top: clamp(3.5rem, 7vw, 6rem);
+		padding-top: clamp(2.5rem, 5vw, 4rem);
+		border-top: 1px solid var(--ink-faint);
+	}
+
+	.col__title {
+		margin: 0 0 1.2rem;
+		font-family: Poppins, sans-serif;
+		font-size: 0.74rem;
+		font-weight: 600;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: var(--rb-red);
+	}
+
+	.col ul {
+		display: grid;
+		gap: 0.65rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.col a {
+		font-size: 0.92rem;
+		color: var(--ink-dim);
+		text-decoration: none;
+		transition: color var(--transition);
+	}
+
+	.col a:hover {
+		color: var(--ink);
+	}
+
+	.footer__base {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		justify-content: space-between;
+		align-items: baseline;
+		margin-top: clamp(3rem, 6vw, 5rem);
+		padding-top: 1.6rem;
+		border-top: 1px solid var(--ink-faint);
+		font-size: 0.8rem;
+		color: var(--ink-dim);
+	}
+
+	.footer__base p {
+		max-width: 60ch;
+		margin: 0;
+	}
+
+	.footer__top a {
+		color: var(--ink);
+		text-decoration: none;
+	}
+</style>

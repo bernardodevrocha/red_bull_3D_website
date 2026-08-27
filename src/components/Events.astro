@@ -1,0 +1,264 @@
+---
+/**
+ * The events calendar as an editorial index: one row per event, the row's
+ * subject rising out of it on hover. Dates and editions come from redbull.com's
+ * 2026 calendar.
+ */
+const events = [
+	{
+		name: 'Red Bull Rampage',
+		discipline: 'Bike',
+		place: 'Virgin, Utah',
+		date: '8 e 10 de outubro',
+		note: '25ª edição. As mulheres abrem no dia 8, os homens correm no sábado 10.',
+	},
+	{
+		name: 'Red Bull Ladeira Abaixo',
+		discipline: 'Soapbox',
+		place: 'São Paulo',
+		date: '15 de novembro',
+		note: 'Carrinhos sem motor, feitos em casa, descendo uma ladeira fechada para isso.',
+	},
+	{
+		name: 'Red Bull Batalha',
+		discipline: 'Música',
+		place: 'Nacional',
+		date: 'Abril',
+		note: 'Freestyle de rima em formato de mata-mata, decidido em rounds de improviso.',
+	},
+	{
+		name: 'Red Bull Cerro Abajo',
+		discipline: 'Bike',
+		place: 'Valparaíso, Chile',
+		date: 'Temporada 2026',
+		note: 'Downhill urbano por escadarias e telhados. Brasileiro no topo do pódio recente.',
+	},
+	{
+		name: 'Red Bull Symphonic',
+		discipline: 'Música',
+		place: 'Brasil',
+		date: 'Temporada 2026',
+		note: 'Um artista, uma orquestra, um repertório reescrito. A edição com MC Hariel.',
+	},
+	{
+		name: 'Red Bull Basement',
+		discipline: 'Inovação',
+		place: 'Global',
+		date: 'Temporada 2026',
+		note: 'Estudantes universitários transformando uma ideia em produto em poucos meses.',
+	},
+];
+
+/** Accent- and space-safe anchor id. */
+const slug = (value: string) =>
+	value
+		.toLowerCase()
+		.normalize('NFD')
+		.replace(/[̀-ͯ]/g, '')
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/(^-|-$)/g, '');
+---
+
+<section class="events" id="eventos" aria-labelledby="events-title">
+	<header class="events__head">
+		<p class="eyebrow" data-reveal>Calendário</p>
+		<h2 class="events__title" id="events-title" data-reveal style="--i:1">
+			O que vem<br />pela frente
+		</h2>
+	</header>
+
+	<ol class="list">
+		{events.map((event, index) => (
+			<li class="row" id={slug(event.name)} data-reveal style={`--i:${index}`}>
+				<a class="row__link" href={`#${slug(event.name)}`}>
+					<span class="row__date">{event.date}</span>
+
+					<span class="row__main">
+						<span class="row__name" data-text={event.name}>
+							<span class="row__name-in">{event.name}</span>
+							<span class="row__name-out" aria-hidden="true">{event.name}</span>
+						</span>
+						<span class="row__note">{event.note}</span>
+					</span>
+
+					<span class="row__meta">
+						<span class="row__tag">{event.discipline}</span>
+						<span class="row__place">{event.place}</span>
+					</span>
+				</a>
+			</li>
+		))}
+	</ol>
+</section>
+
+<style>
+	.events {
+		padding: var(--section-y) 0;
+		background: rgba(243, 244, 247, 0.62);
+	}
+
+	.events__head,
+	.list {
+		width: var(--shell);
+		margin-inline: auto;
+	}
+
+	.eyebrow {
+		margin: 0 0 1.2rem;
+		font-family: Poppins, sans-serif;
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.26em;
+		text-transform: uppercase;
+		color: var(--rb-red);
+	}
+
+	.events__title {
+		margin: 0;
+		font-family: Poppins, sans-serif;
+		font-size: clamp(2.2rem, 6vw, 4.6rem);
+		font-weight: 800;
+		line-height: 0.98;
+		letter-spacing: -0.03em;
+	}
+
+	.list {
+		/* `auto` on the sides, not 0 — the shorthand would otherwise undo the
+		   margin-inline: auto that centres every shell-width block. */
+		margin: clamp(3rem, 6vw, 5rem) auto 0;
+		padding: 0;
+		list-style: none;
+		border-top: 1px solid var(--ink-faint);
+	}
+
+	.row {
+		border-bottom: 1px solid var(--ink-faint);
+	}
+
+	.row__link {
+		display: grid;
+		grid-template-columns: 10rem 1fr 12rem;
+		gap: 1.5rem;
+		align-items: baseline;
+		padding: clamp(1.5rem, 3vw, 2.4rem) 0;
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.row__date {
+		font-family: Poppins, sans-serif;
+		font-size: 0.82rem;
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--ink-dim);
+		transition: color var(--transition);
+	}
+
+	.row__main {
+		display: block;
+	}
+
+	/* Two stacked copies of the name; the row slides one out and the other in. */
+	.row__name {
+		position: relative;
+		display: block;
+		height: 1.02em;
+		overflow: hidden;
+		font-family: Poppins, sans-serif;
+		font-size: clamp(1.4rem, 3.4vw, 2.6rem);
+		font-weight: 800;
+		line-height: 1.02;
+		letter-spacing: -0.025em;
+	}
+
+	.row__name-in,
+	.row__name-out {
+		display: block;
+		transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.row__name-out {
+		position: absolute;
+		inset: 0;
+		color: var(--rb-red);
+		transform: translateY(100%);
+	}
+
+	.row__link:hover .row__name-in,
+	.row__link:focus-visible .row__name-in {
+		transform: translateY(-100%);
+	}
+
+	.row__link:hover .row__name-out,
+	.row__link:focus-visible .row__name-out {
+		transform: none;
+	}
+
+	.row__note {
+		display: block;
+		max-width: 52ch;
+		margin-top: 0.6rem;
+		font-size: 0.92rem;
+		line-height: 1.55;
+		color: var(--ink-dim);
+	}
+
+	.row__meta {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.5rem;
+		text-align: right;
+	}
+
+	.row__tag {
+		padding: 0.3rem 0.8rem;
+		border: 1px solid var(--ink-faint);
+		border-radius: var(--pill);
+		font-family: Poppins, sans-serif;
+		font-size: 0.7rem;
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		transition: border-color var(--transition), background var(--transition);
+	}
+
+	.row__place {
+		font-size: 0.85rem;
+		color: var(--ink-dim);
+	}
+
+	.row__link:hover .row__tag,
+	.row__link:focus-visible .row__tag {
+		border-color: var(--rb-red);
+		background: var(--rb-red);
+		color: #fff;
+	}
+
+	.row__link:hover .row__date,
+	.row__link:focus-visible .row__date {
+		color: var(--ink);
+	}
+
+	@media (max-width: 780px) {
+		.row__link {
+			grid-template-columns: 1fr;
+			gap: 0.8rem;
+		}
+
+		.row__meta {
+			flex-direction: row;
+			align-items: center;
+			justify-content: flex-start;
+			text-align: left;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.row__name-in,
+		.row__name-out {
+			transition-duration: 1ms;
+		}
+	}
+</style>

@@ -1,0 +1,279 @@
+---
+import { editions } from '../data/editions';
+
+/**
+ * The product itself. Figures are the ones Red Bull publishes for the 250 ml
+ * can; the edition strip reuses the same artwork the 3D can wears, cropped to
+ * the front panel.
+ */
+
+interface Stat {
+	/** Counted up from zero when the block scrolls into view. */
+	value: number;
+	/** Unit printed right after the figure, if any. */
+	suffix: string;
+	label: string;
+}
+
+const stats: Stat[] = [
+	{ value: 80, suffix: ' mg', label: 'de cafeína por lata de 250 ml — o mesmo que um café' },
+	{ value: 4, suffix: '', label: 'vitaminas do complexo B: niacina, ácido pantotênico, B6 e B12' },
+	{ value: 1987, suffix: '', label: 'o ano em que a primeira lata foi vendida' },
+];
+
+interface LineupItem {
+	name: string;
+	flavour: string;
+	note: string;
+	/** Unwrapped label artwork, cropped to its front panel by CSS. */
+	art: string;
+}
+
+const lineup: LineupItem[] = [
+	{
+		name: 'Energy Drink',
+		flavour: 'O original',
+		note: 'Cafeína, taurina, vitaminas do complexo B e açúcares.',
+		art: editions[0].label,
+	},
+	{
+		name: 'Red Edition',
+		flavour: 'Melancia',
+		note: 'A linha Editions troca o sabor sem mexer na fórmula funcional.',
+		art: editions[1].label,
+	},
+	{
+		name: 'Blue Edition',
+		flavour: 'Mirtilo',
+		note: 'Mesma cafeína, mesma taurina, um perfil escuro e ácido.',
+		art: editions[2].label,
+	},
+	{
+		name: 'Winter Edition',
+		flavour: 'Baunilha gelada com frutas vermelhas',
+		note: 'A sazonal que aparece e some junto com a estação.',
+		art: editions[3].label,
+	},
+	{
+		name: 'Coconut Edition',
+		flavour: 'Coco com frutas vermelhas',
+		note: 'Tropical na entrada, seco no final.',
+		art: editions[4].label,
+	},
+	{
+		name: 'Spring Edition',
+		flavour: 'Cereja sakura',
+		note: 'Floral e leve, sobre uma lata coberta de flor de cerejeira.',
+		art: editions[5].label,
+	},
+];
+---
+
+<section class="drink" id="lata" aria-labelledby="drink-title">
+	<div class="drink__intro">
+		<div>
+			<p class="eyebrow" data-reveal>A lata</p>
+			<h2 class="drink__title" id="drink-title" data-reveal style="--i:1">
+				A fórmula não<br />mudou desde 1987
+			</h2>
+		</div>
+
+		<p class="drink__lede" data-reveal style="--i:2">
+			Cafeína, taurina, vitaminas do complexo B e açúcares — ou, nas versões Sugarfree e
+			Zero, sucralose e acessulfame de potássio no lugar da sacarose e da glicose. Os
+			ingredientes funcionais são os mesmos em toda a linha. O que muda é o sabor.
+		</p>
+	</div>
+
+	<dl class="stats">
+		{stats.map((stat, index) => (
+			<div class="stat" data-reveal style={`--i:${index}`}>
+				<dt class="stat__value">
+					<span data-count={stat.value}>0</span>{stat.suffix}
+				</dt>
+				<dd class="stat__label">{stat.label}</dd>
+			</div>
+		))}
+	</dl>
+
+	<div class="lineup">
+		<h3 class="lineup__title" data-reveal>A linha</h3>
+
+		<ul class="lineup__list">
+			{lineup.map((item, index) => (
+				<li class="edition" data-reveal style={`--i:${index % 3}`}>
+					<div class="edition__art">
+						<img src={item.art} alt="" loading="lazy" decoding="async" />
+					</div>
+					<h4 class="edition__name">{item.name}</h4>
+					<p class="edition__flavour">{item.flavour}</p>
+					<p class="edition__note">{item.note}</p>
+				</li>
+			))}
+		</ul>
+	</div>
+</section>
+
+<style>
+	.drink {
+		padding: var(--section-y) 0;
+		background: linear-gradient(180deg, rgba(243, 244, 247, 0.7) 0%, rgba(255, 255, 255, 0) 62%);
+	}
+
+	.drink__intro,
+	.stats,
+	.lineup {
+		width: var(--shell);
+		margin-inline: auto;
+	}
+
+	.drink__intro {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: clamp(2rem, 5vw, 4rem);
+		align-items: end;
+	}
+
+	.eyebrow {
+		margin: 0 0 1.2rem;
+		font-family: Poppins, sans-serif;
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.26em;
+		text-transform: uppercase;
+		color: var(--rb-red);
+	}
+
+	.drink__title {
+		margin: 0;
+		font-family: Poppins, sans-serif;
+		font-size: clamp(2.2rem, 6vw, 4.6rem);
+		font-weight: 800;
+		line-height: 0.98;
+		letter-spacing: -0.03em;
+	}
+
+	.drink__lede {
+		margin: 0;
+		font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+		line-height: 1.65;
+		color: var(--ink-dim);
+	}
+
+	/* --- figures ---------------------------------------------------------- */
+
+	.stats {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+		gap: clamp(1.5rem, 3vw, 3rem);
+		margin-block: clamp(3.5rem, 7vw, 6rem);
+		padding-block: clamp(2rem, 4vw, 3rem);
+		border-block: 1px solid var(--ink-faint);
+	}
+
+	.stat {
+		margin: 0;
+	}
+
+	.stat__value {
+		font-family: Poppins, sans-serif;
+		font-size: clamp(2.6rem, 6vw, 4.2rem);
+		font-weight: 900;
+		line-height: 1;
+		letter-spacing: -0.04em;
+		font-variant-numeric: tabular-nums;
+		color: var(--rb-red);
+	}
+
+	.stat__label {
+		max-width: 26ch;
+		margin: 0.9rem 0 0;
+		font-size: 0.9rem;
+		line-height: 1.55;
+		color: var(--ink-dim);
+	}
+
+	/* --- line-up ---------------------------------------------------------- */
+
+	.lineup__title {
+		margin: 0 0 clamp(1.5rem, 3vw, 2.5rem);
+		font-family: Poppins, sans-serif;
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.26em;
+		text-transform: uppercase;
+		color: var(--ink-dim);
+	}
+
+	.lineup__list {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+		gap: clamp(1.2rem, 2.5vw, 2rem);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.edition {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.edition__art {
+		aspect-ratio: 4 / 5;
+		margin-bottom: 1.1rem;
+		border: 1px solid var(--ink-faint);
+		overflow: hidden;
+	}
+
+	/* The artwork is a full can wrap, so the crop is pushed to the right to
+	   land on the front panel. */
+	.edition__art img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 71% center;
+		transform: scale(1.02);
+		transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1),
+			object-position 700ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.edition:hover .edition__art img {
+		transform: scale(1.08);
+		object-position: 62% center;
+	}
+
+	.edition__name {
+		margin: 0;
+		font-family: Poppins, sans-serif;
+		font-size: 1.05rem;
+		font-weight: 700;
+		letter-spacing: -0.01em;
+	}
+
+	.edition__flavour {
+		margin: 0.25rem 0 0;
+		font-size: 0.88rem;
+		color: var(--rb-silver);
+	}
+
+	.edition__note {
+		margin: 0.7rem 0 0;
+		font-size: 0.85rem;
+		line-height: 1.55;
+		color: var(--ink-dim);
+	}
+
+	@media (max-width: 780px) {
+		.drink__intro {
+			grid-template-columns: 1fr;
+			align-items: start;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.edition__art img {
+			transition: none;
+		}
+	}
+</style>

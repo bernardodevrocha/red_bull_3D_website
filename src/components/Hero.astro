@@ -1,65 +1,30 @@
 ---
-import canModel from '../assets/3D/can.glb?url';
+import { editions, canModelUrl, metalTextureUrl } from '../data/editions';
 
 const navigation = [
-	{ label: 'Flavour', href: '#flavour' },
-	{ label: 'Drinks', href: '#drinks' },
-	{ label: 'Fruit', href: '#fruit' },
-	{ label: 'About', href: '#about' },
-	{ label: 'Contact', href: '#contact' },
+	{ label: 'Universo', href: '#universo' },
+	{ label: 'Eventos', href: '#eventos' },
+	{ label: 'Atletas', href: '#atletas' },
+	{ label: 'A lata', href: '#lata' },
+	{ label: 'Contato', href: '#contato' },
 ];
 
-const sizes = ['500 ML', '100 ML', '125 ML'];
+const sizes = ['250 ML', '355 ML', '473 ML'];
 
-const flavours = [
-	{
-		id: 'lime',
-		name: 'Cheeky lime',
-		description:
-			"Discover a world of vibrant flavors with our premium juice selection. At fresh & juicy, we believe in the power of nature's finest ingredients to bring you",
-		background: 'linear-gradient(100deg, #A9D45B 0%, #B7DD68 52%, #C5E56E 100%)',
-		accent: '#B8E63C',
-		accentDeep: '#5E9612',
-		band: 'ZERO SUGAR',
-		lid: '#A8C94A',
-		cta: '#4D5A3A',
-	},
-	{
-		id: 'kiwi',
-		name: 'Zesty kiwi',
-		description:
-			'A sharp, green-fruit hit built on cold-pressed kiwi and a long citrus finish. Same zero sugar formula, same charge, an entirely different edge.',
-		background: 'linear-gradient(100deg, #8FCB5A 0%, #A3D461 52%, #B6DE6D 100%)',
-		accent: '#7BD44A',
-		accentDeep: '#2F7A2A',
-		band: 'ZERO SUGAR',
-		lid: '#86BE45',
-		cta: '#3E5232',
-	},
-	{
-		id: 'citrus',
-		name: 'Golden citrus',
-		description:
-			'Sun-ripened yellow citrus pressed into a bright, clean charge. Bold up front, dry on the finish, and still nothing but zero sugar underneath.',
-		background: 'linear-gradient(100deg, #C3D95A 0%, #D2E268 52%, #DDE97C 100%)',
-		accent: '#E9DC3B',
-		accentDeep: '#A07A0B',
-		band: 'ZERO SUGAR',
-		lid: '#D6CF4E',
-		cta: '#5A5730',
-	},
-];
-
+const flavours = editions;
 const first = flavours[0];
 ---
 
-<main class="hero" id="hero" style={`--bg:${first.background}; --cta-ink:${first.cta}`}>
-	<div class="hero__bg" aria-hidden="true"></div>
+<section class="hero" id="hero" style={`--bg:${first.background}; --cta-ink:${first.cta}`}>
+	<div class="hero__bg" aria-hidden="true">
+		<div class="hero__wipe"></div>
+		<div class="hero__glow"></div>
+	</div>
 
 	<header class="site-header">
-		<a class="brand" href="/">Monster</a>
+		<a class="brand" href="/">Red Bull</a>
 
-		<nav class="site-nav" id="site-nav" aria-label="Main">
+		<nav class="site-nav" id="site-nav" aria-label="Principal">
 			<ul>
 				{navigation.map((item) => (
 					<li><a href={item.href}>{item.label}</a></li>
@@ -68,7 +33,7 @@ const first = flavours[0];
 		</nav>
 
 		<div class="header-actions">
-			<a class="icon-button" href="#account" aria-label="Open account">
+			<a class="icon-button" href="#account" aria-label="Abrir conta">
 				<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
 					<circle cx="12" cy="12" r="9.2" stroke="currentColor" stroke-width="1.3" />
 					<circle cx="12" cy="9.6" r="3.1" stroke="currentColor" stroke-width="1.3" />
@@ -81,7 +46,7 @@ const first = flavours[0];
 				</svg>
 			</a>
 
-			<a class="icon-button icon-button--bag" href="#cart" aria-label="Open cart, 2 items">
+			<a class="icon-button icon-button--bag" href="#cart" aria-label="Abrir carrinho, 2 itens">
 				<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
 					<path
 						d="M4.6 7.6h14.8l-1.1 12a1.6 1.6 0 0 1-1.6 1.4H7.3a1.6 1.6 0 0 1-1.6-1.4l-1.1-12Z"
@@ -102,7 +67,7 @@ const first = flavours[0];
 			<button
 				class="menu-toggle"
 				type="button"
-				aria-label="Open menu"
+				aria-label="Abrir menu"
 				aria-expanded="false"
 				aria-controls="site-nav"
 			>
@@ -112,26 +77,27 @@ const first = flavours[0];
 		</div>
 	</header>
 
-	<h1 class="brand-title" aria-hidden="true">MONSTER</h1>
-	<span class="sr-only">Monster — Cheeky lime</span>
+	<h1 class="brand-title" aria-hidden="true">RED BULL</h1>
+	<span class="sr-only" id="can-label">Red Bull — {first.name}</span>
 
 	<div class="stage">
 		<div class="stage__shadow" aria-hidden="true"></div>
 		<canvas
 			class="stage__canvas"
 			id="can-canvas"
-			data-model={canModel}
-			aria-label="Interactive 3D Monster can. Drag to rotate."
+			data-model={canModelUrl}
+			data-metal={metalTextureUrl}
+			aria-label="Lata 3D interativa da Red Bull. Arraste para girar."
 			role="img"></canvas>
 	</div>
 
 	<section class="product-info" aria-labelledby="flavour-name">
 		<h2 class="product-info__title" id="flavour-name" data-field="name">{first.name}</h2>
 		<p class="product-info__text" data-field="description">{first.description}</p>
-		<a class="cta" href="#flavour">See More</a>
+		<a class="cta" href="#lata">Ver mais</a>
 	</section>
 
-	<div class="sizes" role="group" aria-label="Choose a size">
+	<div class="sizes" role="group" aria-label="Escolher tamanho">
 		{sizes.map((size, index) => (
 			<button
 				class="sizes__item"
@@ -145,7 +111,7 @@ const first = flavours[0];
 	</div>
 
 	<div class="carousel">
-		<button class="carousel__button" type="button" data-slide="-1" aria-label="Previous product">
+		<button class="carousel__button" type="button" data-slide="-1" aria-label="Edição anterior">
 			<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
 				<path
 					d="M14.2 5.6 8 12l6.2 6.4"
@@ -156,7 +122,20 @@ const first = flavours[0];
 				/>
 			</svg>
 		</button>
-		<button class="carousel__button" type="button" data-slide="1" aria-label="Next product">
+
+		<div class="carousel__dots" role="group" aria-label="Escolher edição">
+			{flavours.map((flavour, index) => (
+				<button
+					class="carousel__dot"
+					type="button"
+					data-jump={index}
+					aria-label={flavour.name}
+					aria-pressed={index === 0 ? 'true' : 'false'}
+				></button>
+			))}
+		</div>
+
+		<button class="carousel__button" type="button" data-slide="1" aria-label="Próxima edição">
 			<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
 				<path
 					d="M9.8 5.6 16 12l-6.2 6.4"
@@ -169,10 +148,10 @@ const first = flavours[0];
 		</button>
 	</div>
 
-	<button class="scroll-down" type="button">Scroll<br />Down</button>
+	<button class="scroll-down" type="button">Role<br />abaixo</button>
 
 	<script type="application/json" id="flavour-data" set:html={JSON.stringify(flavours)}></script>
-</main>
+</section>
 
 <style>
 	.hero {
@@ -192,14 +171,41 @@ const first = flavours[0];
 		overflow: hidden;
 	}
 
-	/* 1 — lime gradient field ------------------------------------------------ */
+	/* 1 — edition gradient field --------------------------------------------- */
 
 	.hero__bg {
 		position: absolute;
 		inset: 0;
 		z-index: 0;
 		background: var(--bg);
-		transition: background 600ms ease;
+	}
+
+	/* The incoming edition, revealed by a slanted wipe that runs with the can.
+	   Once the wipe has covered the field the colour is committed to .hero__bg
+	   and this layer is clipped away again. */
+	.hero__wipe {
+		position: absolute;
+		inset: 0;
+		background: var(--bg-next);
+		clip-path: polygon(-30% 0%, -15% 100%, -30% 100%, -30% 0%);
+		will-change: clip-path;
+	}
+
+	/* Ambient light: a slow breath and a slow drift, on different periods so
+	   the field never settles into an obvious loop. */
+	.hero__glow {
+		position: absolute;
+		left: 14%;
+		top: 6%;
+		width: 62%;
+		height: 86%;
+		border-radius: 50%;
+		background: radial-gradient(
+			closest-side,
+			rgba(255, 255, 255, 0.16) 0%,
+			rgba(255, 255, 255, 0) 74%
+		);
+		animation: glow-breathe 17s ease-in-out infinite alternate;
 	}
 
 	.hero__bg::after {
@@ -211,6 +217,27 @@ const first = flavours[0];
 			rgba(255, 255, 255, 0.2) 0%,
 			rgba(255, 255, 255, 0) 62%
 		);
+		animation: sheen-drift 23s ease-in-out infinite alternate;
+	}
+
+	@keyframes glow-breathe {
+		from {
+			transform: translate3d(-4%, 2%, 0) scale(1);
+			opacity: 0.72;
+		}
+		to {
+			transform: translate3d(5%, -3%, 0) scale(1.16);
+			opacity: 1;
+		}
+	}
+
+	@keyframes sheen-drift {
+		from {
+			transform: translate3d(-2.5%, -1.5%, 0) scale(1.05);
+		}
+		to {
+			transform: translate3d(3%, 2%, 0) scale(1.13);
+		}
 	}
 
 	/* 2 — oversized brand typography ---------------------------------------- */
@@ -233,11 +260,11 @@ const first = flavours[0];
 		background: linear-gradient(
 			90deg,
 			#000000 0%,
-			#04060a 24%,
-			#33421c 42%,
-			#9cb47a 50%,
-			#eef3e3 58%,
-			#fdfef9 76%,
+			#05060a 24%,
+			#2c3350 42%,
+			#93a0bd 50%,
+			#e9ecf3 58%,
+			#fbfcfe 76%,
 			#ffffff 100%
 		);
 		-webkit-background-clip: text;
@@ -285,9 +312,9 @@ const first = flavours[0];
 		border-radius: 50%;
 		background: radial-gradient(
 			closest-side,
-			rgba(38, 55, 12, 0.34) 0%,
-			rgba(38, 55, 12, 0.12) 55%,
-			rgba(38, 55, 12, 0) 100%
+			rgba(10, 12, 24, 0.36) 0%,
+			rgba(10, 12, 24, 0.13) 55%,
+			rgba(10, 12, 24, 0) 100%
 		);
 		filter: blur(calc(3 * var(--u)));
 	}
@@ -445,11 +472,12 @@ const first = flavours[0];
 		font-size: calc(9.5 * var(--u));
 		font-weight: 600;
 		text-decoration: none;
-		transition: transform var(--transition), background var(--transition);
+		transition: transform var(--transition), background var(--transition),
+			color 600ms ease;
 	}
 
 	.cta:hover {
-		background: #f1f6e6;
+		background: #eef1f7;
 		transform: translateY(calc(-1 * var(--u)));
 	}
 
@@ -475,7 +503,7 @@ const first = flavours[0];
 		padding: 0;
 		border: 0;
 		border-radius: 50%;
-		background: rgba(75, 85, 55, 0.35);
+		background: rgba(12, 16, 34, 0.3);
 		color: #fff;
 		font-family: inherit;
 		font-size: calc(9 * var(--u));
@@ -495,7 +523,7 @@ const first = flavours[0];
 		width: calc(46 * var(--u));
 		height: calc(46 * var(--u));
 		background: #fff;
-		color: #59634b;
+		color: var(--cta-ink);
 		font-weight: 600;
 	}
 
@@ -508,7 +536,36 @@ const first = flavours[0];
 		left: 50%;
 		transform: translateX(-50%);
 		display: flex;
+		align-items: center;
 		gap: calc(8 * var(--u));
+	}
+
+	.carousel__dots {
+		display: flex;
+		align-items: center;
+		gap: calc(7 * var(--u));
+		padding-inline: calc(4 * var(--u));
+	}
+
+	.carousel__dot {
+		width: calc(7 * var(--u));
+		height: calc(7 * var(--u));
+		padding: 0;
+		border: 0;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.4);
+		cursor: pointer;
+		transition: background var(--transition), width var(--transition);
+	}
+
+	.carousel__dot:hover {
+		background: rgba(255, 255, 255, 0.72);
+	}
+
+	.carousel__dot[aria-pressed='true'] {
+		width: calc(20 * var(--u));
+		border-radius: var(--pill);
+		background: #fff;
 	}
 
 	.carousel__button {
@@ -601,7 +658,7 @@ const first = flavours[0];
 			transform: none;
 			display: grid;
 			place-items: center;
-			background: rgba(24, 38, 6, 0.94);
+			background: rgba(8, 12, 30, 0.94);
 			opacity: 0;
 			visibility: hidden;
 			transition: opacity var(--transition), visibility var(--transition);
@@ -710,6 +767,20 @@ const first = flavours[0];
 		.scroll-down:hover {
 			transform: none;
 		}
+
+		/* No wipe and no ambient drift — the field just crossfades. */
+		.hero__bg {
+			transition: background 400ms ease;
+		}
+
+		.hero__wipe {
+			display: none;
+		}
+
+		.hero__glow,
+		.hero__bg::after {
+			animation: none;
+		}
 	}
 </style>
 
@@ -721,15 +792,17 @@ const first = flavours[0];
 		name: string;
 		description: string;
 		background: string;
-		accent: string;
-		accentDeep: string;
-		band: string;
+		label: string;
+		front: number;
 		lid: string;
 		cta: string;
 	}
 
 	const hero = document.getElementById('hero') as HTMLElement;
 	const canvas = document.getElementById('can-canvas') as HTMLCanvasElement;
+	const srLabel = document.getElementById('can-label')!;
+	const wipe = hero.querySelector<HTMLElement>('.hero__wipe')!;
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	const flavours: Flavour[] = JSON.parse(
 		document.getElementById('flavour-data')!.textContent!,
 	);
@@ -738,55 +811,122 @@ const first = flavours[0];
 
 	// --- 3D can -------------------------------------------------------------
 
-	const scenePromise = createCanScene(canvas, canvas.dataset.model!, {
-		style: {
-			accent: flavours[0].accent,
-			accentDeep: flavours[0].accentDeep,
-			band: flavours[0].band,
+	const scenePromise = createCanScene(
+		canvas,
+		{
+			modelUrl: canvas.dataset.model!,
+			metalUrl: canvas.dataset.metal!,
+			labels: flavours.map((flavour) => ({
+				url: flavour.label,
+				front: flavour.front,
+				lid: flavour.lid,
+			})),
 		},
-		lidColor: flavours[0].lid,
-	}).catch((error) => {
+		0,
+	).catch((error) => {
 		console.error('Could not start the 3D stage', error);
 		return null;
 	});
 
-	// --- flavour carousel ---------------------------------------------------
+	// --- background wipe ----------------------------------------------------
+
+	/** Off to the left, and fully across — a slanted edge on both. */
+	const WIPE_OUT = 'polygon(-30% 0%, -15% 100%, -30% 100%, -30% 0%)';
+	const WIPE_IN = 'polygon(115% 0%, 130% 100%, -30% 100%, -30% 0%)';
+	/** Long enough to land just after the can does. */
+	const WIPE_MS = 650;
+
+	let wiping: Animation | null = null;
+	let incoming = '';
+
+	function paintBackground(background: string) {
+		if (reduceMotion) {
+			hero.style.setProperty('--bg', background);
+			return;
+		}
+
+		// A swap interrupted mid-wipe: commit the colour it was revealing, so
+		// the next wipe runs over it rather than over the one before that.
+		if (wiping) {
+			wiping.cancel();
+			wiping = null;
+			hero.style.setProperty('--bg', incoming);
+		}
+
+		incoming = background;
+		hero.style.setProperty('--bg-next', background);
+
+		const animation = wipe.animate([{ clipPath: WIPE_OUT }, { clipPath: WIPE_IN }], {
+			duration: WIPE_MS,
+			easing: 'cubic-bezier(0.65, 0, 0.35, 1)',
+			fill: 'forwards',
+		});
+		wiping = animation;
+
+		animation.finished
+			.then(() => {
+				if (wiping !== animation) return;
+				// Hand the colour to the base layer and clip this one away
+				// again, in the same style flush so nothing flashes.
+				hero.style.setProperty('--bg', background);
+				animation.cancel();
+				wiping = null;
+			})
+			.catch(() => undefined);
+	}
+
+	// --- edition carousel ---------------------------------------------------
+
+	const dots = [...hero.querySelectorAll<HTMLButtonElement>('[data-jump]')];
 
 	function showFlavour(next: number) {
 		index = (next + flavours.length) % flavours.length;
 		const flavour = flavours[index];
 
-		hero.style.setProperty('--bg', flavour.background);
-		hero.style.setProperty('--cta-ink', flavour.cta);
-
-		for (const node of hero.querySelectorAll<HTMLElement>('[data-field]')) {
-			const key = node.dataset.field as 'name' | 'description';
-			node.animate(
-				[
-					{ opacity: 1, transform: 'translateY(0)' },
-					{ opacity: 0, transform: 'translateY(6px)' },
-					{ opacity: 0, transform: 'translateY(-6px)', offset: 0.5 },
-					{ opacity: 1, transform: 'translateY(0)' },
-				],
-				{ duration: 620, easing: 'ease' },
-			);
-			window.setTimeout(() => {
-				node.textContent = flavour[key];
-			}, 300);
+		// The controls track the selection straight away; everything that is
+		// part of the picture waits for the can.
+		srLabel.textContent = `Red Bull — ${flavour.name}`;
+		for (const dot of dots) {
+			dot.setAttribute('aria-pressed', String(Number(dot.dataset.jump) === index));
 		}
 
-		scenePromise.then((scene) =>
-			scene?.setStyle(
-				{ accent: flavour.accent, accentDeep: flavour.accentDeep, band: flavour.band },
-				flavour.lid,
-			),
-		);
+		/** Runs on the frame the can swaps its print, half-way through the turn. */
+		function repaint() {
+			paintBackground(flavour.background);
+			hero.style.setProperty('--cta-ink', flavour.cta);
+
+			for (const node of hero.querySelectorAll<HTMLElement>('[data-field]')) {
+				const key = node.dataset.field as 'name' | 'description';
+				node.animate(
+					[
+						{ opacity: 1, transform: 'translateY(0)' },
+						{ opacity: 0, transform: 'translateY(6px)' },
+						{ opacity: 0, transform: 'translateY(-6px)', offset: 0.5 },
+						{ opacity: 1, transform: 'translateY(0)' },
+					],
+					{ duration: 620, easing: 'ease' },
+				);
+				window.setTimeout(() => {
+					node.textContent = flavour[key];
+				}, 300);
+			}
+		}
+
+		scenePromise.then((scene) => {
+			// No scene means no turn to wait for.
+			if (scene) scene.setLabel(index, repaint);
+			else repaint();
+		});
 	}
 
 	for (const button of hero.querySelectorAll<HTMLButtonElement>('[data-slide]')) {
 		button.addEventListener('click', () => {
 			showFlavour(index + Number(button.dataset.slide));
 		});
+	}
+
+	for (const dot of dots) {
+		dot.addEventListener('click', () => showFlavour(Number(dot.dataset.jump)));
 	}
 
 	// --- size selector ------------------------------------------------------
@@ -809,7 +949,7 @@ const first = flavours[0];
 	toggle.addEventListener('click', () => {
 		const open = toggle.getAttribute('aria-expanded') === 'true';
 		toggle.setAttribute('aria-expanded', String(!open));
-		toggle.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
+		toggle.setAttribute('aria-label', open ? 'Abrir menu' : 'Fechar menu');
 		nav.dataset.open = String(!open);
 	});
 

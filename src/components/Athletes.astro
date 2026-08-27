@@ -1,0 +1,168 @@
+---
+/**
+ * Three Brazilians from the Red Bull roster. The oversized rank numbers drift
+ * against the scroll, so the block never sits completely still.
+ */
+
+// Pegue a URL d e fotos destes atletas e coloque aqui, alem de tipar esta parada
+const athletes = [
+	{
+		name: 'Gabriel Medina',
+		sport: 'Surfe',
+		line: 'Tricampeão mundial da WSL',
+		years: '2014 · 2018 · 2021',
+		note: 'Bronze na Olimpíada de 2024 e a foto que rodou o mundo depois da onda quase perfeita.',
+	},
+	{
+		name: 'Pedro Barros',
+		sport: 'Skate',
+		line: 'Prata olímpica no park',
+		years: 'Tóquio 2020',
+		note: 'Dono do Red Bull Bowl Rippers em Marselha e do projeto Pedro’s Bigger Picture.',
+	},
+	{
+		name: 'Rayssa Leal',
+		sport: 'Skate',
+		line: 'Medalhista olímpica no street',
+		years: 'Tóquio 2020 · Paris 2024',
+		note: 'Da primeira fadinha viral à referência técnica da modalidade em qualquer campeonato.',
+	},
+];
+---
+
+<section class="athletes" id="atletas" aria-labelledby="athletes-title">
+	<header class="athletes__head">
+		<p class="eyebrow" data-reveal>Time</p>
+		<h2 class="athletes__title" id="athletes-title" data-reveal style="--i:1">
+			Quem carrega<br />as asas por aqui
+		</h2>
+	</header>
+
+	<div class="roster">
+		{athletes.map((athlete, index) => (
+			<article class="athlete" data-reveal style={`--i:${index}`}>
+				<span
+					class="athlete__rank"
+					aria-hidden="true"
+					data-parallax={index % 2 === 0 ? '-48' : '48'}
+				>
+					{String(index + 1).padStart(2, '0')}
+				</span>
+
+				<div class="athlete__body">
+					<p class="athlete__sport">{athlete.sport}</p>
+					<h3 class="athlete__name">{athlete.name}</h3>
+					<p class="athlete__line">{athlete.line}</p>
+					<p class="athlete__years">{athlete.years}</p>
+					<p class="athlete__note">{athlete.note}</p>
+				</div>
+			</article>
+		))}
+	</div>
+</section>
+
+<style>
+	.athletes {
+		position: relative;
+		padding: var(--section-y) 0;
+		overflow: hidden;
+	}
+
+	.athletes__head,
+	.roster {
+		width: var(--shell);
+		margin-inline: auto;
+	}
+
+	.eyebrow {
+		margin: 0 0 1.2rem;
+		font-family: Poppins, sans-serif;
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.26em;
+		text-transform: uppercase;
+		color: var(--rb-red);
+	}
+
+	.athletes__title {
+		margin: 0;
+		font-family: Poppins, sans-serif;
+		font-size: clamp(2.2rem, 6vw, 4.6rem);
+		font-weight: 800;
+		line-height: 0.98;
+		letter-spacing: -0.03em;
+	}
+
+	.roster {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+		gap: clamp(2rem, 4vw, 3.5rem);
+		margin-top: clamp(3.5rem, 7vw, 6rem);
+	}
+
+	.athlete {
+		position: relative;
+		padding-top: 2rem;
+		border-top: 2px solid var(--rb-red);
+	}
+
+	.athlete__rank {
+		position: absolute;
+		top: -0.35em;
+		right: -0.1em;
+		font-family: Poppins, sans-serif;
+		font-size: clamp(6rem, 13vw, 11rem);
+		font-weight: 900;
+		line-height: 1;
+		letter-spacing: -0.06em;
+		color: transparent;
+		-webkit-text-stroke: 1px rgba(11, 13, 18, 0.14);
+		pointer-events: none;
+		transform: translate3d(0, var(--drift, 0px), 0);
+	}
+
+	.athlete__body {
+		position: relative;
+	}
+
+	.athlete__sport {
+		margin: 0 0 0.7rem;
+		font-family: Poppins, sans-serif;
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: var(--ink-dim);
+	}
+
+	.athlete__name {
+		margin: 0;
+		font-family: Poppins, sans-serif;
+		font-size: clamp(1.6rem, 3vw, 2.2rem);
+		font-weight: 800;
+		line-height: 1.05;
+		letter-spacing: -0.025em;
+	}
+
+	.athlete__line {
+		margin: 0.9rem 0 0;
+		font-size: 1rem;
+		font-weight: 600;
+		color: var(--rb-silver);
+	}
+
+	.athlete__years {
+		margin: 0.3rem 0 0;
+		font-family: Poppins, sans-serif;
+		font-size: 0.8rem;
+		letter-spacing: 0.08em;
+		color: var(--ink-dim);
+	}
+
+	.athlete__note {
+		margin: 1.2rem 0 0;
+		font-size: 0.92rem;
+		line-height: 1.6;
+		color: var(--ink-dim);
+	}
+</style>

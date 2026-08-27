@@ -1,0 +1,132 @@
+---
+/**
+ * The seam between the hero and the rest of the page: two marquee rows running
+ * against each other. Pure CSS — the track holds two identical copies of the
+ * phrase list and translates by exactly half its width, so the loop is
+ * seamless whatever the viewport does.
+ */
+const phrases = [
+	'Red Bull Te Dá Asas',
+	'Desde 1987',
+	'Bike',
+	'Skate',
+	'Surfe',
+	'Esporte a Motor',
+	'Gaming',
+	'Dança',
+	'Música',
+];
+---
+
+<section class="ticker" id="next" aria-hidden="true">
+	<div class="ticker__row">
+		<div class="ticker__track">
+			{[0, 1].map(() => (
+				<div class="ticker__set">
+					{phrases.map((phrase) => (
+						<span class="ticker__item">
+							{phrase}
+							<i class="ticker__mark"></i>
+						</span>
+					))}
+				</div>
+			))}
+		</div>
+	</div>
+
+	<div class="ticker__row ticker__row--reverse">
+		<div class="ticker__track">
+			{[0, 1].map(() => (
+				<div class="ticker__set">
+					{phrases.map((phrase) => (
+						<span class="ticker__item ticker__item--ghost">
+							{phrase}
+							<i class="ticker__mark"></i>
+						</span>
+					))}
+				</div>
+			))}
+		</div>
+	</div>
+</section>
+
+<style>
+	.ticker {
+		position: relative;
+		z-index: 1;
+		display: grid;
+		gap: clamp(0.25rem, 0.8vw, 0.75rem);
+		padding-block: clamp(2rem, 4vw, 3.5rem);
+		background: rgba(255, 255, 255, 0.72);
+		border-block: 1px solid var(--ink-faint);
+		overflow: hidden;
+		user-select: none;
+	}
+
+	.ticker__row {
+		overflow: hidden;
+	}
+
+	.ticker__track {
+		display: flex;
+		width: max-content;
+		animation: marquee 42s linear infinite;
+	}
+
+	.ticker__row--reverse .ticker__track {
+		animation-direction: reverse;
+		animation-duration: 56s;
+	}
+
+	.ticker__set {
+		display: flex;
+		align-items: center;
+	}
+
+	.ticker__item {
+		display: inline-flex;
+		align-items: center;
+		gap: clamp(1.4rem, 3vw, 3rem);
+		padding-right: clamp(1.4rem, 3vw, 3rem);
+		font-family: Poppins, sans-serif;
+		font-size: clamp(1.5rem, 4.4vw, 3.4rem);
+		font-weight: 800;
+		letter-spacing: -0.02em;
+		line-height: 1;
+		white-space: nowrap;
+		color: var(--ink);
+	}
+
+	/* The second row reads as an echo of the first. */
+	.ticker__item--ghost {
+		color: transparent;
+		-webkit-text-stroke: 1px rgba(11, 13, 18, 0.24);
+	}
+
+	.ticker__mark {
+		display: block;
+		width: clamp(0.4rem, 1vw, 0.7rem);
+		height: clamp(0.4rem, 1vw, 0.7rem);
+		border-radius: 50%;
+		background: var(--rb-red);
+	}
+
+	@keyframes marquee {
+		from {
+			transform: translate3d(0, 0, 0);
+		}
+		to {
+			transform: translate3d(-50%, 0, 0);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.ticker__track {
+			animation: none;
+		}
+
+		.ticker__row--reverse {
+			display: none;
+		}
+	}
+</style>

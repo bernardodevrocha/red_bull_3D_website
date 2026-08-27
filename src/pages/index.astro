@@ -1,8 +1,26 @@
 ---
 import Hero from '../components/Hero.astro';
+import Ticker from '../components/Ticker.astro';
+import Disciplines from '../components/Disciplines.astro';
+import Events from '../components/Events.astro';
+import Athletes from '../components/Athletes.astro';
+import EnergyDrink from '../components/EnergyDrink.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout>
 	<Hero />
+	<Ticker />
+	<Disciplines />
+	<Events />
+	<Athletes />
+	<EnergyDrink />
+	<SiteFooter slot="footer" />
 </Layout>
+
+<script>
+	import { initMotion } from '../scripts/motion';
+
+	initMotion();
+</script>

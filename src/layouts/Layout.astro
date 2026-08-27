@@ -1,18 +1,21 @@
 ---
+import PageBackground from '../components/PageBackground.astro';
+import { criticalCanAssets } from '../data/editions';
+
 interface Props {
 	title?: string;
 	description?: string;
 }
 
 const {
-	title = 'Monster — Cheeky Lime',
+	title = 'Red Bull — Te Dá Asas',
 	description =
-		'Discover a world of vibrant flavors with our premium selection of energy drinks.',
+		'Seis edições da Red Bull numa lata 3D interativa, o calendário de eventos, os atletas e a fórmula da lata.',
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,6 +25,18 @@ const {
 		<meta name="description" content={description} />
 		<title>{title}</title>
 
+		{/* Start the can's assets on the wire immediately, rather than after the
+		    three.js bundle has been parsed and executed. */}
+		{criticalCanAssets.map((asset) => (
+			<link
+				rel="preload"
+				href={asset.href}
+				as={asset.as}
+				type={asset.type}
+				crossorigin={asset.as === 'fetch' ? '' : undefined}
+			/>
+		))}
+
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -30,7 +45,11 @@ const {
 		/>
 	</head>
 	<body>
-		<slot />
+		<PageBackground />
+		<main>
+			<slot />
+		</main>
+		<slot name="footer" />
 	</body>
 </html>
 
@@ -58,15 +77,53 @@ const {
 		--pill: 999px;
 		--transition: 260ms ease;
 
+		/* Palette for everything below the hero: white, the way redbull.com
+		   runs it. The hero keeps its own per-edition gradient, so the page
+		   reads as one coloured panel on a white sheet. */
+		--paper: #ffffff;
+		--paper-2: #f3f4f7;
+		--paper-3: #e7eaef;
+		--ink: #0b0d12;
+		--ink-dim: rgba(11, 13, 18, 0.6);
+		--ink-faint: rgba(11, 13, 18, 0.12);
+		--rb-red: #db0a40;
+		--rb-navy: #223971;
+		--rb-silver: #8b95a6;
+		--rb-gold: #d99b00;
+
+		--shell: min(1200px, 88vw);
+		--section-y: clamp(5rem, 11vw, 10rem);
+
 		font-family: Quicksand, Poppins, 'Helvetica Neue', Arial, sans-serif;
-		color: #fff;
-		background: #b1d861;
+		color: var(--ink);
+		background: var(--paper);
 		overflow-x: hidden;
 		-webkit-font-smoothing: antialiased;
 	}
 
+	/* Shared scroll-reveal. Sections opt in with [data-reveal]; motion.ts flips
+	   [data-inview] the first time each one is seen. */
+	[data-reveal] {
+		opacity: 0;
+		transform: translateY(2rem);
+		transition: opacity 900ms cubic-bezier(0.22, 1, 0.36, 1),
+			transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+		transition-delay: calc(var(--i, 0) * 85ms);
+	}
+
+	[data-reveal][data-inview='true'] {
+		opacity: 1;
+		transform: none;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		[data-reveal] {
+			transition: none;
+		}
+	}
+
 	:focus-visible {
-		outline: 2px solid #fff;
+		outline: 2px solid var(--rb-red);
 		outline-offset: 3px;
 		border-radius: 4px;
 	}

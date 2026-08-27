@@ -1,27 +1,40 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
-import {
-	drawLabel,
-	loadLabelFonts,
-	whenFontsReady,
-	type LabelStyle,
-} from './can-label';
+import { drawLabel, loadImage } from './can-label';
+
+export interface CanLabel {
+	/** URL of the unwrapped artwork for this edition. */
+	url: string;
+	/** Where its front panel sits along the wrap, as a fraction of u. */
+	front: number;
+	/** Lid tint for this edition. */
+	lid: string;
+}
 
 export interface CanScene {
-	/** Swaps the printed artwork, spinning the can while it changes. */
-	setStyle(style: LabelStyle, lidColor: string): void;
+	/**
+	 * Plays the flavour-swap animation and lands on `index`. `atSwap` fires on
+	 * the frame the new print goes on, so the rest of the page can change
+	 * colour with the can instead of ahead of it.
+	 */
+	setLabel(index: number, atSwap?: () => void): void;
 	dispose(): void;
 }
 
 const FOV = 20;
 /** Can height as a share of the viewport, from the design spec (410 / 576). */
 const CAN_VIEWPORT_RATIO = 410 / 576;
+/** Length of one flavour swap, in seconds. */
+const SWAP_TIME = 1.05;
+
+const easeInOutCubic = (x: number) =>
+	x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 
 export async function createCanScene(
 	canvas: HTMLCanvasElement,
-	modelUrl: string,
-	initial: { style: LabelStyle; lidColor: string },
+	assets: { modelUrl: string; metalUrl: string; labels: CanLabel[] },
+	initial = 0,
 ): Promise<CanScene> {
 	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -46,15 +59,31 @@ export async function createCanScene(
 	key.position.set(-2.2, 3, 4);
 	scene.add(key);
 
-	const rim = new THREE.DirectionalLight(0xd8f79a, 2.2);
+	const rim = new THREE.DirectionalLight(0xfff1f3, 2.2);
 	rim.position.set(3, 1.4, -2.5);
 	scene.add(rim);
 
 	scene.add(new THREE.AmbientLight(0xffffff, 0.35));
 
-	await loadLabelFonts();
+	// Only the edition on screen is on the critical path. The other five are
+	// fetched in the background and awaited on the first swap that needs them,
+	// which keeps roughly 370 KB of artwork out of the first frame.
+	const artwork = assets.labels.map((label) => loadImage(label.url));
+	for (const pending of artwork) pending.catch(() => undefined);
 
-	const gltf = await new GLTFLoader().loadAsync(modelUrl);
+	const [gltf, metalMap] = await Promise.all([
+		new GLTFLoader().loadAsync(assets.modelUrl),
+		new THREE.TextureLoader().loadAsync(assets.metalUrl),
+		artwork[initial],
+	]);
+
+	// Brushed aluminium, tiled tightly enough that the grain stays fine at the
+	// size the can is actually rendered.
+	metalMap.colorSpace = THREE.SRGBColorSpace;
+	metalMap.wrapS = metalMap.wrapT = THREE.RepeatWrapping;
+	metalMap.repeat.set(6, 3);
+	metalMap.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
 	const model = gltf.scene;
 
 	// Normalise: centre on the origin and scale so the can is exactly 1 unit tall.
@@ -64,15 +93,23 @@ export async function createCanScene(
 	model.position.sub(center);
 	const holder = new THREE.Group();
 	holder.add(model);
-	holder.scale.setScalar(1 / size.y);
+	const baseScale = 1 / size.y;
+	holder.scale.setScalar(baseScale);
 
 	const pivot = new THREE.Group();
 	pivot.add(holder);
 	scene.add(pivot);
 
-	let labelTexture: THREE.CanvasTexture | null = null;
 	let shell: THREE.MeshPhysicalMaterial | null = null;
 	let lid: THREE.MeshStandardMaterial | null = null;
+
+	// Body, rim and base: the aluminium texture doing the work it was made for.
+	const body = new THREE.MeshStandardMaterial({
+		map: metalMap,
+		color: 0xdfe3e6,
+		roughness: 0.26,
+		metalness: 1,
+	});
 
 	model.traverse((child) => {
 		if (!(child instanceof THREE.Mesh)) return;
@@ -87,38 +124,57 @@ export async function createCanScene(
 				clearcoatRoughness: 0.18,
 			});
 			child.material = shell;
-		} else {
-			const isTop = child.parent?.name === 'Top' || child.name === 'Top';
-			const metal = new THREE.MeshStandardMaterial({
-				color: isTop ? 0xa8c94a : 0x9aa094,
-				roughness: isTop ? 0.34 : 0.26,
+		} else if (child.parent?.name === 'Top' || child.name === 'Top') {
+			lid = new THREE.MeshStandardMaterial({
+				map: metalMap,
+				color: 0xc9ced4,
+				roughness: 0.34,
 				metalness: 1,
 			});
-			if (isTop) lid = metal;
-			child.material = metal;
+			child.material = lid;
+		} else {
+			child.material = body;
 		}
 		source.dispose?.();
 	});
 
-	function applyStyle(style: LabelStyle, lidColor: string) {
-		const texture = new THREE.CanvasTexture(drawLabel(style));
+	// --- label textures -----------------------------------------------------
+
+	const textures = new Map<number, THREE.CanvasTexture>();
+
+	/** Waits for that edition's artwork, then bakes its wrap once and caches it. */
+	async function ensureTexture(index: number) {
+		const cached = textures.get(index);
+		if (cached) return cached;
+
+		const image = await artwork[index];
+		// Another call may have baked it while this one was waiting.
+		const raced = textures.get(index);
+		if (raced) return raced;
+
+		const texture = new THREE.CanvasTexture(drawLabel(image, assets.labels[index].front));
 		texture.colorSpace = THREE.SRGBColorSpace;
 		texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 		texture.wrapS = THREE.RepeatWrapping;
+		textures.set(index, texture);
+		return texture;
+	}
+
+	/** Puts an edition on the can. False means its artwork has not landed yet. */
+	function applyLabel(index: number) {
+		const texture = textures.get(index);
+		if (!texture) return false;
 		if (shell) {
 			shell.map = texture;
 			shell.needsUpdate = true;
 		}
-		labelTexture?.dispose();
-		labelTexture = texture;
-		lid?.color.set(lidColor);
+		lid?.color.set(assets.labels[index].lid);
+		return true;
 	}
 
 	let current = initial;
-	applyStyle(current.style, current.lidColor);
-
-	// Repaint once the web fonts land, in case the first pass used a fallback.
-	whenFontsReady().then(() => applyStyle(current.style, current.lidColor));
+	await ensureTexture(current);
+	applyLabel(current);
 
 	// --- sizing -------------------------------------------------------------
 
@@ -152,7 +208,20 @@ export async function createCanScene(
 	let lastX = 0;
 	const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
 
+	/**
+	 * The flavour swap: one whipped turn of the can, with the new print dropped
+	 * in at the half-way point, while the back is facing the camera.
+	 */
+	let swap: {
+		to: number;
+		from: number;
+		t: number;
+		applied: boolean;
+		announce: () => void;
+	} | null = null;
+
 	function onPointerDown(event: PointerEvent) {
+		if (swap) return;
 		dragging = true;
 		lastX = event.clientX;
 		canvas.setPointerCapture(event.pointerId);
@@ -190,16 +259,49 @@ export async function createCanScene(
 		const dt = Math.min(clock.getDelta(), 0.05);
 		t += dt;
 
-		if (!reduceMotion && !dragging) spinTarget += dt * 0.14;
-		spin += (spinTarget - spin) * 0.08;
+		let lift = 0;
+		let tilt = 0;
+		let glint = 0;
+
+		if (swap) {
+			swap.t = Math.min(1, swap.t + dt / SWAP_TIME);
+			// Drive the turn straight off the timeline so it lands on exactly one
+			// revolution, instead of easing in behind a lagging target.
+			spinTarget = swap.from + easeInOutCubic(swap.t) * Math.PI * 2;
+			spin = spinTarget;
+
+			// Retries each frame: on a slow connection the artwork may still be
+			// in flight when the can reaches the half-way point.
+			if (!swap.applied && swap.t >= 0.5 && applyLabel(swap.to)) {
+				swap.applied = true;
+				swap.announce();
+			}
+
+			// A single arc of lift, tilt, scale and light across the whole swap.
+			const pulse = Math.sin(Math.PI * swap.t);
+			lift = pulse * 0.055;
+			tilt = pulse * 0.06;
+			glint = pulse;
+			holder.scale.setScalar(baseScale * (1 + pulse * 0.05));
+
+			if (swap.t >= 1) {
+				swap = null;
+				holder.scale.setScalar(baseScale);
+			}
+		} else {
+			if (!reduceMotion && !dragging) spinTarget += dt * 0.14;
+			spin += (spinTarget - spin) * 0.08;
+		}
+
+		key.intensity = 2.6 + glint * 1.6;
 
 		pointer.x += (pointer.tx - pointer.x) * 0.05;
 		pointer.y += (pointer.ty - pointer.y) * 0.05;
 
 		pivot.rotation.y = spin + pointer.x * 0.18;
 		pivot.rotation.x = -pointer.y * 0.07;
-		pivot.rotation.z = Math.sin(t * 0.5) * 0.012;
-		pivot.position.y = reduceMotion ? 0 : Math.sin(t * 0.8) * 0.012;
+		pivot.rotation.z = Math.sin(t * 0.5) * 0.012 + tilt;
+		pivot.position.y = (reduceMotion ? 0 : Math.sin(t * 0.8) * 0.012) + lift;
 
 		renderer.render(scene, camera);
 	}
@@ -208,17 +310,47 @@ export async function createCanScene(
 	frame();
 
 	return {
-		setStyle(style, lidColor) {
-			current = { style, lidColor };
-			spinTarget += Math.PI * 2;
-			// Swap the artwork while the back of the can faces the camera.
-			window.setTimeout(() => applyStyle(style, lidColor), 320);
+		setLabel(index, atSwap) {
+			if (index === current && !swap) return;
+			current = index;
+
+			let announced = false;
+			const announce = () => {
+				if (announced) return;
+				announced = true;
+				atSwap?.();
+			};
+
+			// Bake the wrap alongside the turn rather than before it, so a
+			// still-downloading edition never delays the spin.
+			const ready = ensureTexture(index);
+
+			if (reduceMotion) {
+				ready.then(() => {
+					applyLabel(index);
+					announce();
+				});
+				return;
+			}
+
+			dragging = false;
+			swap = { to: index, from: spin, t: 0, applied: false, announce };
+
+			ready.then(() => {
+				// If the artwork only landed after the turn was over, put it on
+				// now — otherwise the frame loop has already handled it.
+				if (current !== index || swap) return;
+				applyLabel(index);
+				announce();
+			});
 		},
 		dispose() {
 			cancelAnimationFrame(raf);
 			observer.disconnect();
 			window.removeEventListener('pointermove', onPointerMove);
-			labelTexture?.dispose();
+			for (const texture of textures.values()) texture.dispose();
+			body.dispose();
+			metalMap.dispose();
 			pmrem.dispose();
 			renderer.dispose();
 		},
